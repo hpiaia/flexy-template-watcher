@@ -1,21 +1,16 @@
-import { Server } from "socket.io";
-import ngrok from "ngrok";
+import { connect } from 'ngrok'
+import { Server } from 'socket.io'
 
-import { logger } from "./logger";
+import { logger } from './logger'
 
-const PORT = 3000;
+const PORT = 3000
 
 export async function start() {
-  const io = new Server();
+  const url = await connect({ addr: PORT, region: 'sa' })
 
-  const url = await ngrok.connect({
-    addr: PORT,
-    region: "sa",
-  });
+  logger.info(`Hot reload server listening on ${url}`)
 
-  logger.info(`Hot reload server listening on ${url}`);
-
-  return io.listen(PORT, {
-    cors: { origin: "*" },
-  });
+  return new Server().listen(PORT, {
+    cors: { origin: '*' },
+  })
 }
