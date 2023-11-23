@@ -10,5 +10,6 @@ invariant(process.env.TEMPLATES_PATH, "TEMPLATES_PATH is not defined");
 export const BASE_URL = process.env.BASE_URL;
 export const SESSION_TOKEN = process.env.SESSION_TOKEN;
 export const TEMPLATES_PATH = process.env.TEMPLATES_PATH;
+export const CONCURRENCY = process.env.CONCURRENCY ? parseInt(process.env.CONCURRENCY) : 10;
 
 export const ALL_TEMPLATES: Template[] = templates.map((template) => new Template(template.name, template.value));

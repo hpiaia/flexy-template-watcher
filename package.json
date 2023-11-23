@@ -1,10 +1,13 @@
 {
   "name": "flexy-template-watcher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A cli tool to download, watch and update flexy templates with included hot-reload.",
   "author": "Humberto Piaia <betopiaia@gmail.com>",
   "license": "MIT",
   "main": "dist/index.js",
+  "repository": "https://github.com/hpiaia/flexy-template-watcher",
+  "homepage": "https://github.com/hpiaia/flexy-template-watcher#readme",
+  "bin": "./dist/index.js",
   "scripts": {
     "build": "rm -rf dist && tsc",
     "start": "ts-node -T src/index.ts"
