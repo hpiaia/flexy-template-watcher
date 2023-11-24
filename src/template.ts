@@ -1,8 +1,10 @@
+import { load } from 'cheerio'
 import { readFile, writeFile } from 'fs/promises'
+import { decode } from 'html-entities'
 import { resolve } from 'path'
 
 import { BASE_URL, TEMPLATES_PATH } from './config'
-import { request, scrapeTemplateContent } from './utils'
+import { request } from './utils'
 
 export class Template {
   constructor(
@@ -15,7 +17,9 @@ export class Template {
   }
 
   get remoteContent() {
-    return request(this.remotePath, 'get').then(scrapeTemplateContent)
+    return request(this.remotePath, 'get')
+      .then((html) => load(html)('textarea#template_content').html())
+      .then(decode)
   }
 
   get localPath() {

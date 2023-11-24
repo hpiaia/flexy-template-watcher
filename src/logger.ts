@@ -29,5 +29,5 @@ export const logger = {
 }
 
 export function createProgressBar(title: string, total: number) {
-  return new ProgressBar(`  ${title} [:bar] :percent :current/:total`, { total })
+  return new ProgressBar(`  ${title} [:bar] :percent :current/:total`, { total, width: 30 })
 }

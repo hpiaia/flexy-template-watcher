@@ -3,7 +3,7 @@
   "semi": false,
   "singleQuote": true,
   "plugins": ["@trivago/prettier-plugin-sort-imports"],
-  "importOrder": ["^[./]"],
+  "importOrder": ["^dotenv/config$", "<THIRD_PARTY_MODULES>", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true
 }

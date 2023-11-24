@@ -11,5 +11,6 @@ export const BASE_URL = process.env.BASE_URL
 export const SESSION_TOKEN = process.env.SESSION_TOKEN
 export const TEMPLATES_PATH = process.env.TEMPLATES_PATH
 export const CONCURRENCY = process.env.CONCURRENCY ? parseInt(process.env.CONCURRENCY) : 3
+export const HOT_RELOAD_PORT = process.env.HOT_RELOAD_PORT ? parseInt(process.env.HOT_RELOAD_PORT) : 8182
 
 export const ALL_TEMPLATES: Template[] = templates.map((template) => new Template(template.name, template.value))
