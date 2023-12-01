@@ -6,7 +6,7 @@ import { mkdir } from 'fs/promises'
 
 import { CONCURRENCY, TEMPLATES_PATH } from './config'
 import { start } from './hot-reload'
-import { createProgressBar } from './logger'
+import { createProgressBar, logger } from './logger'
 import { createWatcher, selectTemplates, shouldDownload } from './utils'
 
 async function main() {
@@ -27,6 +27,7 @@ async function main() {
   await createWatcher(async (template) => {
     await template.upload()
     await hrServer.emit('reload')
+    logger.success(`Template ${template.name} atualizado`)
   })
 }
 

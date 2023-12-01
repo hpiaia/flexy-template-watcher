@@ -29,8 +29,7 @@ export function createWatcher(onChange: (template: Template) => void) {
       logger.info('Observando alterações nos templates, pressione Ctrl+C para sair')
     })
     .on('change', async (path) => {
-      const template = findTemplate(path)
-      logger.info(`Template [${template.value}] alterado`)
+      const template = new Template(path, path)
       onChange(template)
     })
 }
