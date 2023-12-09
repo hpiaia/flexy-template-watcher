@@ -24,14 +24,11 @@ export function findTemplate(value: string) {
 }
 
 export function createWatcher(onChange: (template: Template) => void) {
-  return watch(TEMPLATES_PATH)
-    .on('ready', () => {
-      logger.info('Observando alterações nos templates, pressione Ctrl+C para sair')
-    })
-    .on('change', async (path) => {
-      const template = new Template(path, path)
-      onChange(template)
-    })
+  return watch(TEMPLATES_PATH, {
+    ignored: /(^|[\/\\])\../,
+  })
+    .on('ready', () => logger.info('Observando alterações nos templates, pressione Ctrl+C para sair'))
+    .on('change', async (path) => onChange(Template.fromLocalPath(path)))
 }
 
 export function shouldDownload() {

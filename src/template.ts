@@ -42,4 +42,9 @@ export class Template {
       },
     })
   }
+
+  static fromLocalPath(path: string) {
+    const name = path.split('/').pop()!
+    return new Template(name, name)
+  }
 }
