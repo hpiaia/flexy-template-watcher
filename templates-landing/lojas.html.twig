@@ -1,0 +1,13 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% block content %}
+    <div class="container py-12">
+        {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with {path : [{'title' : 'Todas as lojas' }]} %}
+        
+        <h1 class="mt-12 text-3xl font-bold leading-tight tracking-tight text-gray-900">Todas as lojas</h1>
+
+        <div class="mt-4">
+            {% include 'FlexyFtwoStoreBundle:Include:store-list.html.twig' with { slider: false } %}
+        </div>
+    </div>
+{% endblock %}

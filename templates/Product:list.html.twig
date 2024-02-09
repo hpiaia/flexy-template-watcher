@@ -1,0 +1,136 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% set breadcrumbsPath = store.referenceCode ? [{title: store.name}] : [{ url: path('flexy_ftwo_store_product_list_all'), title: 'Produtos' }] %}
+
+{% if category %}
+    {% for step in f2_store_create_breadcrumbs({ category: category }) %}
+        {% set breadcrumbsPath = breadcrumbsPath|merge([{ url: step.categoryUrl, title: step.categoryName }]) %}
+    {% endfor %}
+{% endif %}
+
+{%
+    set banners = store.referenceCode
+        ? flexy_ftwo_banner_image_list(store.referenceCode ~ '-banner').images
+        : flexy_ftwo_banner_image_list((category ? category.referenceCode : 'search') ~ '-banner').images
+%}
+
+{% set comments = store.referenceCode ? flexy_ftwo_shopping_store_rating_comment_list(shoppingStore.id) : [] %}
+
+{% set filters = {
+    useSearchParameters: 'true',
+    page: app.request.get('page', 1),
+    itemsPerPage: app.request.get('itemsPerPage', 15),
+    sortOrder: app.request.get('sortOrder', 'category-asc'),
+    filter: filterString,
+    shoppingStoreReferenceCode: store.referenceCode,
+    category: {
+        referenceCode: category ? category.referenceCode : null,
+    }
+} %}
+
+{% set result = f2_variant_list(filters) %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path: breadcrumbsPath } %}
+
+    <div x-data="{ open: false }" @keydown.window.escape="open = false" class="mt-12 bg-white md:mt-0">
+        {% if banners | length > 0 %}
+            <div class="container pb-12">
+                {% include 'FlexyFtwoStoreBundle:Include/Common:main-banner.html.twig' with { images: banners } %}
+            </div>
+        {% endif %}
+
+        {% if store.referenceCode is not empty %}
+            <div class="container pb-12">
+                <div class="flex items-center mb-8 space-x-6">
+                    <img src="{{ store.logoUrl ? store.logoUrl : flexy_ftwo_account_resource_url_img('img/product-placeholder.gif') }}" alt="" class="object-contain w-16 h-16 rounded-lg md:w-32 md:h-32">
+
+                    <div class="space-y-2">
+                        <h1 class="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">{{ store.name }}</h1>
+
+                        {% set totalRating = 0 %}
+                        {% set countRating = 0 %}
+                        {% for comment in comments %}
+                            {% set totalRating = totalRating + comment.rating.rating %}
+                            {% set countRating = countRating + 1 %}
+                        {% endfor %}
+                        
+                        <div>
+                            <div class="flex items-center space-x-2 {{ countRating > 0 ? 'text-yellow-500' : 'text-gray-400' }}">
+                                <span class="flex items-center space-x-1">
+                                    {% if countRating > 0 %}
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                                            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                                        </svg>
+                                    {% endif %}
+                        
+                                    <span>{{ countRating > 0 ? (totalRating / countRating)|round(2) : 'sem avaliações' }}</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if store.descriptionLong is not empty %}
+                    <div x-data="{ expanded: false }" class="mt-6">
+                        <div class="max-w-full prose text-justify text-gray-700" x-show="expanded" x-collapse.min.58px>
+                            {{ store.descriptionLong|raw }}
+                        </div>
+
+                        <button @click="expanded = ! expanded" class="w-full pt-2 mt-2 text-sm text-left text-gray-600 border-t-2">
+                            <span x-show="expanded">Recolher</span>
+                            <span x-show="! expanded">Mostrar descrição completa</span>
+                        </button>
+                    </div>
+                {% endif %}
+
+                {% if store.descriptionShort is not empty %}
+                    <div class="p-4 mt-6 border-l-4 border-yellow-400 rounded bg-yellow-50">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="w-5 h-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    {{ store.descriptionShort }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            </div>
+        {% endif %}
+
+        <div class="container pb-8">
+            <h2 class="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
+                {{ category ? category.name : 'Todos os produtos' }}
+            </h2>
+
+            {% if category.description %}
+                <p class="max-w-xl mt-4 text-sm text-gray-700">{{ category.description|raw }}</p>
+            {% endif %}
+
+            {% set subcategories = flexy_ftwo_shopping_store_category_list(store.referenceCode, category ? category : null).categories %}
+            {% if subcategories|length > 0 %}
+                {% include 'FlexyFtwoStoreBundle:Include:category-list.html.twig' with { title: null, categories: subcategories, small: true } %}
+            {% endif %}
+        </div>
+
+        {% include 'FlexyFtwoStoreBundle:Include:variant-filters.html.twig' %}
+
+        <div class="container py-12 sm:py-16">
+            {% include 'FlexyFtwoStoreBundle:Include:variant-list.html.twig' with {
+                category: category,
+                variants: result.pagination,
+                totalResults: result.totalResults
+            } %}
+        </div>
+
+        {% if store.referenceCode is not empty %} 
+            {% include 'FlexyFtwoStoreBundle:Include:shopping-store-comments.html.twig' with { store: store, comments: comments } %}
+        {% endif %}
+    </div>
+{% endblock %}

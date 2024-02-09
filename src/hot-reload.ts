@@ -1,15 +1,31 @@
+import { create } from 'browser-sync'
 import { connect } from 'ngrok'
-import { Server } from 'socket.io'
 
-import { HOT_RELOAD_PORT } from './config'
+import { TEMPLATES_PATH } from './config'
 import { logger } from './logger'
 
 export async function start() {
-  const url = await connect({ addr: HOT_RELOAD_PORT })
-
-  logger.info(`Hot reload server listening on ${url}`)
-
-  return new Server().listen(HOT_RELOAD_PORT, {
-    cors: { origin: '*' },
+  const url = await connect({
+    region: 'sa',
+    addr: 3000,
   })
+
+  const browserSync = create()
+
+  browserSync.init({
+    server: true,
+    serveStatic: [TEMPLATES_PATH],
+    open: false,
+    socket: {
+      domain: url,
+    },
+    logLevel: 'silent',
+    callbacks: {
+      ready: async () => {
+        logger.info(`Hot reload iniciado, adicione o script -> [${url}/browser-sync/browser-sync-client.js]`)
+      },
+    },
+  })
+
+  return browserSync
 }

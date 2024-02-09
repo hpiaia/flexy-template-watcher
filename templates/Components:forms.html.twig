@@ -1,0 +1,102 @@
+{% macro input(input, label, attr) %}
+    <div>
+        <div class="flex">
+            {{- form_label(input, null, {
+                'label': label,
+                'label_attr': { 'class': 'form-label mb-1.5' }
+            }) -}}
+
+            {% if input.vars.required or attr.required %}
+                <span class="ml-1 text-red-500">*</span>
+            {% endif %}
+        </div>
+
+        {{- form_widget(input, {
+            'attr': (attr is not empty ? attr : {})|merge({
+                class: "form-control",
+            })
+        }) -}}
+
+        {{- _self.input_errors(input) -}}
+    </div>
+{% endmacro %}
+
+{% macro checkbox(input, label, attr) %}
+    <div class="flex items-center">
+        {{- form_widget(input, {
+            'attr': (attr is not empty ? attr : {})|merge({
+                class: "h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-600"
+            })
+        }) -}}
+
+        {{- form_label(input, null, {
+            'label': label,
+            'label_attr': { 'class': 'ml-3 block text-sm leading-6 text-gray-900' }
+        }) -}}
+    </div>
+{% endmacro %}
+
+{% macro hidden(input, value, attr) %}
+    <div class="hidden">
+        {{- form_widget(input, { 'attr': (attr is not empty ? attr : {}) }) -}}
+    </div>
+{% endmacro %}
+
+{% macro submit(label, props = {}) %}
+    {% set props_str = "" %}
+    {% for key, value in props %}
+        {% set props_str = props_str ~ ' ' ~ key ~ '=' ~ value ~ '' %}
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary" {{ props_str }}>
+        {{- _self.spinner() -}}
+
+        <span>{{- label -}}</span>
+    </button>
+{% endmacro %}
+
+{% macro spinner() %}
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="w-5 h-5 mr-3 -ml-1 text-white animate-spin htmx-indicator">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+{% endmacro %}
+
+{% macro input_errors(input) %}
+    {% if input.vars.errors|length > 0 %}
+        <ul class="mt-2.5 text-sm text-red-600">
+            {% for error in input.vars.errors %}
+                <li>{{- error.message -}}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endmacro %}
+
+{% macro errors(key) %}
+    {% if app.session.flashbag.has(key) %}
+        <div class="p-4 rounded-md bg-red-50">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg class="w-5 h-5 text-red-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <h3 class="text-sm font-medium text-red-800">Ocorreu um erro ao enviar o formulário:</h3>
+                    <div class="mt-2 text-sm text-red-700">
+                        <ul role="list" class="pl-5 space-y-1 list-disc">
+                            {% for error in app.session.flashbag.get(key)|first|trans|split(';') %}
+                                <li>{{- error -}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% macro recaptcha() %}
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lf5wCQpAAAAAKY5W-KEGDTn8gaIZ2IOezju8KCH"></script>
+    <input type="hidden" name="recaptchaTokenV3">
+{% endmacro %}

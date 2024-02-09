@@ -1,0 +1,17 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% set customer = flexy_ftwo_current_customer() %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Conta' }, { 'title' : 'Meus pedidos' } ] } %}
+
+    <div class="container mt-12 md:mt-0">
+        <div class="lg:flex lg:gap-x-16">
+            {% include 'FlexyFtwoStoreBundle:Customer:header.html.twig' with { active : 'profile' } %}
+
+            <section class="w-full mt-12 lg:mt-0">
+                {% include 'FlexyFtwoStoreBundle:Include/Profile:customer.html.twig' with {customer: customer, couponsCounter: couponsCounter} %}
+            </section>
+        </div>
+    </div>
+{% endblock %}

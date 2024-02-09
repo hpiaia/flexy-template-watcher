@@ -1,0 +1,11 @@
+<div x-data="pixQrCode({{ order.number }})">
+    <img :src="image" x-show="image" x-cloak>
+
+    <div class="flex space-x-2" x-show="code" x-cloak>
+        <input id="qrcode" x-model="code" class="form-control" readonly>
+
+        <button class="btn btn-primary" data-clipboard-target="#qrcode" x-ref="copy">
+            Copiar
+        </button>
+    </div>
+</div>

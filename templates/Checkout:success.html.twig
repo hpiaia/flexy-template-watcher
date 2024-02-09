@@ -1,0 +1,60 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% if order.hasSales %}
+    {% set orderchild = order.sales|first %}
+    {% set paymentMethods = orderchild.paymentMethods %}
+{% else %}
+    {% set paymentMethods = order.paymentMethods %}
+{% endif %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Pedido concluído' } ] } %}
+
+    <div class="container mt-12 md:mt-0" x-data="" x-init="celebrate">
+        <div class="max-w-xl">
+            <h1 class="text-base font-medium text-primary-600">Obrigado!</h1>
+            <p class="mt-4 text-4xl font-bold tracking-tight">Pedido concluído</p>
+            <p class="mt-4 text-base text-gray-500">Seu pedido #{{ order.number }} foi realizado com sucesso.</p>
+            <p class="mt-4 text-base text-gray-500">Você receberá um e-mail com os detalhes do seu pedido e também poderá acompanhar o status do seu pedido na página <a href="/customer/profile" class="text-primary-500 hover:text-primary-600">meus pedidos</a>.</p>
+        </div>
+
+        <div class="mt-6 text-gray-500">
+            {% for paymentMethod in paymentMethods %}
+                {% if paymentMethod.isBoleto %}
+                    <div class="mt-2">
+                        <strong><a href="{{ path('flexy_ftwo_store_checkout_print_boleto', {paymentId : paymentMethod.id}) }}" target="_blank">Clique aqui para imprimir o boleto bancário.</a></strong>
+                        <p>Assim que identificarmos o pagamento do boleto bancário enviaremos um e-mail confirmando, e encaminharemos o pedido para envio.</p>
+                    </div>
+                {% elseif paymentMethod.isPix %}
+                    <p class="mt-2">O pedido pode ser pago através do QR Code abaixo, seguindo os seguintes passos:<p/>
+
+                    <ul class="mt-2 list-disc list-inside">
+                        <li>Entre no aplicativo do seu banco</li>
+                        <li>Escolha a opção de pagamento PIX</li>
+                        <li>
+                            Escaneie a imagem abaixo para realizar o pagamento ou clique
+                            <span id="pix-copy-and-paste-payment-loading">
+                                <span class="fa fa-spin fa-spinner graph-load"></span>
+                            </span>
+                            <a id="pix-copy-and-paste-payment"
+                                class="hidden copy-to-clipboard" data-text="">
+                                aqui
+                            </a>
+                            para copiar a chave de pagamento
+                        </li>
+                        <li>Confirme as informações</li>
+                        <li>Esse QR Code vence em <b>{{ paymentMethod.paymentExpiresAt|date('d/m/Y H:i') }}</b>. Após o vencimento, a compra será cancelada.</li>
+                    </ul>
+
+                    {% include 'FlexyFtwoStoreBundle:Checkout:renderPixQrCodeAndCopyAndPaste.js.twig' with { order: order } %}
+
+                    <p class="mt-6">Assim que identificarmos o pagamento do PIX enviaremos um e-mail confirmando, e encaminharemos o pedido para envio.</p>
+                    <p class="mt-2">Pode levar alguns minutos para identificarmos o pagamento do PIX.</p>
+                    
+                {% elseif paymentMethod.isBoletoAFaturar %}
+                    <div class="mt-2">Em breve enviaremos seu boleto.</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

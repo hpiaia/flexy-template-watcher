@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-br" class="h-full overflow-y-scroll">
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="htmx-config" content="{{ { ignoreTitle: true, globalViewTransitions: true } | json_encode }}">
+    <script>document.title = "Mimo Express - A sua loja de presentes online."</script>
+
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Mimo Express" />
+
+    {% block metatag %}{% endblock %}
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://pub-6d705850b17a4c28910613b2f406613c.r2.dev/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://pub-6d705850b17a4c28910613b2f406613c.r2.dev/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://pub-6d705850b17a4c28910613b2f406613c.r2.dev/favicon-16x16.png">
+    <link rel="manifest" href="https://pub-6d705850b17a4c28910613b2f406613c.r2.dev/site.webmanifest">
+    <link rel="shortcut icon" href="https://pub-6d705850b17a4c28910613b2f406613c.r2.dev/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Mimo Express">
+    <meta name="application-name" content="Mimo Express">
+    <meta name="msapplication-TileColor" content="#603cba">
+    <meta name="msapplication-config" content="https://pub-6d705850b17a4c28910613b2f406613c.r2.dev/browserconfig.xml">
+    <meta name="theme-color" content="#8b58d8">
+
+    {# styles #}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/silver/pace-theme-minimal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tippy.js@6.3.7/dist/tippy.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/zoomist@2/zoomist.css" />
+
+    <link rel="stylesheet" href="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/styles/tailwind.css">
+    {# {% include 'FlexyFtwoStoreBundle:Quote:list.html.twig' %} #}
+
+    {# scripts #}
+    <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@1.9.10/dist/htmx.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@1.9.10/dist/ext/preload.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/swiper@11.0.5/swiper-bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/validatorjs@3.22.1/dist/validator.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/toastify-js@1.12.0/src/toastify.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@tsparticles/confetti@3.0.3/tsparticles.confetti.bundle.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.11/dist/clipboard.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/zoomist@2/zoomist.umd.js"></script>
+
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAClggqMftVzFLiud3V88mB3bgt_GLnqaw&loading=async&callback=initMap"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/@ryangjchandler/alpine-tooltip@1.3.1/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@glhd/alpine-wizard@1.2.0/dist/wizard.cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/mask@3.13.3/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.13.3/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/focus@3.13.3/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.13.3/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script>
+
+    <script src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/scripts/scripts.js"></script>
+
+    <!-- Meta Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '273141318861363');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=273141318861363&ev=PageView&noscript=1"/></noscript>
+    <!-- End Meta Pixel Code -->
+
+</head>
+<body class="h-full" hx-boost="true" hx-ext="preload">
+
+    <div class="flex flex-col h-full">
+        {% include 'FlexyFtwoStoreBundle:Include/Base:header.html.twig' %}
+
+        <div class="flex-1" id="content">
+            <div class="h-full overflow-x-hidden">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+
+        {% include 'FlexyFtwoStoreBundle:Include/Base:footer.html.twig' %}
+    </div>
+
+</body>
+</html>

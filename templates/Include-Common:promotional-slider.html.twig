@@ -1,0 +1,18 @@
+{% set items = flexy_ftwo_banner_image_list('banners-promocionais').images %}
+
+{% if items | length > 0 %}
+    <section>
+        <div class="pb-6 overflow-visible swiper" x-data="slider({ type: 'carousel', slidesPerView: 'auto' })">
+            <div class="swiper-wrapper">
+                {% for item in items %}
+                    <a href="{{ item.target ?: '#' }}" class="swiper-slide w-[512px] rounded-xl mr-8 transform hover:scale-105 transition duration-300 hover:shadow-lg">
+                        <img src="{{ item.path }}" alt="" class="w-full aspect-[2/1] rounded-xl">
+                    </a>
+                {% endfor %}
+            </div>
+
+            <div class="-ml-8 swiper-button-prev" x-ref="prev"></div>
+            <div class="-mr-8 swiper-button-next" x-ref="next"></div>
+        </div>
+    </section>
+{% endif %}

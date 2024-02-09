@@ -1,0 +1,21 @@
+<div class="f2-order-attributes">
+    {% for orderAttribute in orderAttributes %}
+        <div class="f2-order-attribute f2-order-attribute-{{ orderAttribute.referenceCode }}">
+            <label>
+                {{ orderAttribute.name }}
+                {{ orderAttribute.isRequired ? '<span class="text-error">*</span>' : '' }}
+            </label>
+            {{ flexy_ftwo_common_attribute_render(
+                orderAttribute,
+                null,
+                {
+                    "attr" : {
+                        "name" : "attributeValues[" ~ orderAttribute.referenceCode ~ "]",
+                        "required" : orderAttribute.isRequired
+                    }
+                }
+            ) }}
+        </div>
+        <span id="helpBlock-{{ orderAttribute.referenceCode }}" class="hidden help-block text-message-error"></span>
+    {% endfor %}
+</div>

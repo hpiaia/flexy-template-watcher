@@ -1,0 +1,37 @@
+{% if app.request.get('zipCode') is not empty %}
+    <div>
+        <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900">
+            Tipo de entrega
+        </h2> 
+
+        <p class="mt-4 text-sm text-gray-500">
+            Escolha o tipo de entrega para o seu pedido.
+        </p>
+
+        <fieldset class="mt-6">
+            <legend class="sr-only">Selecione um tipo de entrega</legend>
+
+            <div class="space-y-4">
+                {% set shipmentGroup = details.shipmentGroups|first %}
+
+                {% for shippingMethod in shipmentGroup.shippingMethodDto if shippingMethod.presentation %}
+                    {% set id = shippingMethod.isCarrier ? shippingMethod.name ~ '_' ~ shippingMethod.shippingServiceCode : shippingMethod.name %}
+
+                    <div class="relative flex items-start">
+                        <input id="shippingMethod-{{ id }}" name="shippingMethod" type="radio" value="{{ id }}" class="w-4 h-4 mt-1 border-gray-300 text-primary-600 focus:ring-primary-600 peer" {{ app.request.get('shippingMethod') == id ? 'checked' : '' }} hx-get="{{ path('flexy_ftwo_store_checkout') }}" hx-select="#checkout-form" hx-target="#checkout-form" hx-swap="outerHTML" hx-include="input[name=zipCode], input[name=shippingMethod], input[name=paymentMethod]" hx-disabled-elt="fieldset">
+
+                        <div class="ml-3 text-sm leading-6 peer-disabled:opacity-50 peer-disabled:cursor-not-allowed">
+                            <label for="shippingMethod-{{ id }}" class="font-medium text-gray-900">
+                                {{ shippingMethod.name == 'shipping.method.pickuponplace' ? 'Retirada' : 'Entrega' }}
+                            </label>
+
+                            <p class="text-gray-500">
+                                {{ shippingMethod.name == 'shipping.method.pickuponplace' ? 'O pedido poderá ser retirado em loja.' : 'O pedido será entregue no endereço selecionado.' }}
+                            </p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+    </div>
+{% endif %}

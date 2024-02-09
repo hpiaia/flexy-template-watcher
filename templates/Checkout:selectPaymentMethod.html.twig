@@ -1,0 +1,180 @@
+{% set customer = flexy_ftwo_current_customer() %}
+
+{% set paymentMethod = app.request.get('paymentMethod') %}
+{% set shippingMethod = app.request.get('shippingMethod')|replace({'_': ''}) %}
+
+{% set total = details.masterCart.itemsTotal %}
+{% set discount = total - details.masterCart.itemsTotalWithDiscount %}
+
+{% set shippingTotal = 0 %}
+{% if app.request.get('zipCode') is not empty %}
+    {% for cart in details.carts %}
+        {% set shippingGroup = details.shipmentGroups[cart.shoppingStore ? cart.shoppingStore.id : 0] %}
+        {% set ship = shippingGroup.shippingMethodDto[shippingMethod] %}
+        
+        {% if ship.presentation %}
+            {% set shippingTotal = shippingTotal + ship.price %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% set installments = paymentMethod matches '/payment.method.creditcard/' ? flexy_ftwo_installment_calculator(total - discount + shippingTotal)[paymentMethod] : null %}
+
+<div>
+    <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900">
+        Forma de pagamento
+    </h2> 
+
+    <p class="mt-4 text-sm text-gray-500">
+        Escolha a forma de pagamento que deseja utilizar.
+    </p>
+
+    <fieldset class="mt-6">
+        <div class="grid grid-cols-3 gap-4 md:grid-cols-4 xl:grid-cols-6 2xl:grid-cols-7">
+
+            {% for pkey,payment in availablePaymentMethods if pkey matches '/payment.method.creditcard/' %}
+                {% for key,value in payment %}
+                    <div class="flex items-center">
+                        <input class="hidden peer" id="pm-{{ key }}" name="paymentMethod" type="radio" value="{{ key }}" class="w-4 h-4 border-gray-300 text-primary-600 focus:ring-primary-500" {{ paymentMethod == key ? 'checked' : '' }} hx-get="{{ path('flexy_ftwo_store_checkout') }}" hx-select="#checkout-form" hx-target="#checkout-form" hx-swap="outerHTML" hx-include="input[name=zipCode], input[name=shippingMethod], input[name=shippingSchedule], input[name=paymentMethod]" hx-disabled-elt="fieldset">
+
+                        <label for="pm-{{ key }}" class="border-2 border-gray-100 rounded-lg peer-enabled:cursor-pointer peer-enabled:hover:shadow peer-checked:border-primary-600 peer-disabled:opacity-50">
+                            <img class="h-16 rounded-lg" src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/{{ key|replace({'payment.method.creditcard.' : ''}) }}.png" />
+                        </label>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {% for pkey,payment in availablePaymentMethods if pkey == 'payment.method.pix' %}
+                <div class="flex items-center">
+                    <input class="hidden peer" id="pm-{{ pkey }}" name="paymentMethod" type="radio" value="{{ pkey }}" class="w-4 h-4 border-gray-300 text-primary-600 focus:ring-primary-500" {{ paymentMethod == pkey ? 'checked' : '' }} hx-get="{{ path('flexy_ftwo_store_checkout') }}" hx-select="#checkout-form" hx-target="#checkout-form" hx-swap="outerHTML" hx-include="input[name=zipCode], input[name=shippingMethod], input[name=shippingSchedule], input[name=paymentMethod]" hx-disabled-elt="fieldset">
+
+                    <label for="pm-{{ pkey }}" class="border-2 border-gray-100 rounded-lg peer-enabled:cursor-pointer peer-enabled:hover:shadow peer-checked:border-primary-600 peer-disabled:opacity-50">
+                        <img class="h-16 rounded-lg" src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/pix.png" />
+                    </label>
+                </div>
+            {% endfor %}
+
+            {% for pkey,payment in availablePaymentMethods if pkey == 'payment.method.negotiable' %}
+                <div class="flex items-center">
+                    <input class="hidden peer" id="pm-{{ pkey }}" name="paymentMethod" type="radio" value="{{ pkey }}" class="w-4 h-4 border-gray-300 text-primary-600 focus:ring-primary-500" {{ paymentMethod == pkey ? 'checked' : '' }} hx-get="{{ path('flexy_ftwo_store_checkout') }}" hx-select="#checkout-form" hx-target="#checkout-form" hx-swap="outerHTML" hx-include="input[name=zipCode], input[name=shippingMethod], input[name=shippingSchedule], input[name=paymentMethod]" hx-disabled-elt="fieldset">
+
+                    <label for="pm-{{ pkey }}" class="border-2 border-gray-100 rounded-lg peer-enabled:cursor-pointer peer-enabled:hover:shadow peer-checked:border-primary-600 peer-disabled:opacity-50">
+                        <img class="h-16 rounded-lg" src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/negotiable.png" />
+                    </label>
+                </div>
+            {% endfor %}
+
+        </div>
+    </fieldset>
+
+    {% if paymentMethod matches '/payment.method.creditcard/' %}
+        <fieldset class="grid grid-cols-4 mt-8 gap-x-4 gap-y-6">
+            <div class="col-span-4">
+                <label for="card-number" class="block text-sm font-medium text-gray-700">
+                    Número do cartão <span class="ml-1 text-red-500">*</span>
+                </label>
+
+                <div class="mt-1">
+                    <input type="text" id="card-number" name="checkout[paymentMethod][0][data][number]" autocomplete="cc-number" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="col-span-4">
+                <label for="name-on-card" class="block text-sm font-medium text-gray-700">
+                    Nome impresso no cartão <span class="ml-1 text-red-500">*</span>
+                </label>
+                
+                <div class="mt-1">
+                    <input type="text" id="name-on-card" name="checkout[paymentMethod][0][data][holder]" autocomplete="cc-name" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="col-span-2 md:col-span-1">
+                <label for="expiration-date-month" class="block text-sm font-medium text-gray-700">
+                    Expiração (Mês) <span class="ml-1 text-red-500">*</span>
+                </label>
+
+                <div class="mt-1">
+                    <select id="expiration-date-month" name="checkout[paymentMethod][0][data][expirationMonth]" autocomplete="cc-exp" class="form-control" required>
+                        {% for month in 1..12 %}
+                            <option value="{{ month }}">{{ "%02d"|format(month) }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-span-2 md:col-span-1">
+                <label for="expiration-date-year" class="block text-sm font-medium text-gray-700">
+                    Expiração (Ano) <span class="ml-1 text-red-500">*</span>
+                </label>
+
+                <div class="mt-1">
+                    {% set actualYear = date()|date("Y") %}
+                    {% set maxYear = actualYear + 10 %}
+                    <select id="expiration-date-year" name="checkout[paymentMethod][0][data][expirationYear]" autocomplete="cc-exp" class="form-control" required>
+                        {% for year in actualYear..maxYear %}
+                            <option value="{{ year }}">{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div> 
+
+            <div class="col-span-4 md:col-span-2">
+                <label for="cvc" class="block text-sm font-medium text-gray-700">
+                    CVC <span class="ml-1 text-red-500">*</span>
+                </label>
+
+                <div class="mt-1">
+                    <input type="text" id="cvc" name="checkout[paymentMethod][0][data][cvv]" autocomplete="csc" class="form-control" required>
+                </div>
+            </div>
+
+            <div class="col-span-4">
+                <label for="installments" class="block text-sm font-medium text-gray-700">
+                    Parcelas <span class="ml-1 text-red-500">*</span>
+                </label>
+
+                <div class="mt-1">
+                    <select id="installments" name="checkout[paymentMethod][0][data][installments]" class="form-control" required>
+                        {% if installments.no_tax|length > 0 %}
+                            <optgroup label="Sem juros">
+                                {% for key,installment in installments.no_tax %}
+                                    <option value="{{ key }}">
+                                        {{ key }}x de R$ {{ installment|number_format(2, ',', '.') }}
+                                    </option>
+                                {% endfor %}
+                            </optgroup>
+                        {% endif %}
+
+                        {% if installments.tax|length > 0 %}
+                            <optgroup label="Com juros">
+                                {% for key,installment in installments.tax %}
+                                    <option value="{{ key }}">
+                                        {{ key }}x de R$ {{ installment|number_format(2, ',', '.') }} = R$ {{ (installment * key)|number_format(2, ',', '.') }}
+                                    </option>
+                                {% endfor %}
+                            </optgroup>
+                        {% endif %}
+                    </select>
+                </div>
+            </div> 
+        </fieldset>
+    {% endif %}
+
+    {% if paymentMethod == 'payment.method.pix' %}
+        <div class="py-6 mt-12 text-center text-gray-500 text-balance">
+            <p>Uma nova página será aberta assim que você clicar no botão "Finalizar pedido".</p>
+            <p class="mt-2">O QR Code aparecerá e o pagamento pode ser realizado através dessa tela.</p>
+        </div>
+    {% endif %}
+
+    {% if paymentMethod == 'payment.method.negotiable' %}
+        <div class="py-6 mt-12 text-center text-gray-500 text-balance">
+            <p>A forma de pagamento será combinada diretamente com os vendedores.</p>
+        </div>
+    {% endif %}
+
+    <input type="hidden" name="checkout[paymentMethod][0][name]" value="{{ paymentMethod }}">
+    <input type="hidden" name="checkout[paymentMethod][0][data][cpf]" value="{{ customer.cpf ? customer.cpf.cpf : '' }}">
+    <input type="hidden" name="checkout[paymentMethod][0][data][birthDate]" value="{{ customer.dateOfBirth ? customer.dateOfBirth|date('d/m/Y') : '' }}">
+</div>

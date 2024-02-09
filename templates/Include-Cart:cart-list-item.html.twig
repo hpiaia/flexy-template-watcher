@@ -1,0 +1,74 @@
+{% set parentItem = false %}
+{% if item.parentItem is defined and item.parentItem is not null %}
+    {% set parentItem = item.parentItem %}
+{% endif %}
+
+{% set itemId = item.id %}
+{% if parentItem %}
+    {% set itemId = parentItem.id %}
+{% endif %}
+
+{% set promotionalPrice = promotionDetails ? promotionDetails.finalUnitPrice : item.unitPriceWithDiscount %}
+
+<li class="flex py-6 sm:py-10">
+    <div class="flex-shrink-0">
+        <img src="{{ f2_store_image_placeholder_medium(item.variant.product.masterImage) }}" alt="" class="object-contain object-center w-24 h-24 rounded-md sm:h-48 sm:w-48">
+    </div>
+
+    <div class="flex flex-col justify-between flex-1 ml-4 sm:ml-6">
+        <div class="relative pr-9 sm:grid sm:grid-cols-3 sm:gap-x-6 sm:pr-0">
+            <div class="sm:col-span-2">
+                <div class="flex justify-between">
+                    <h3 class="text-sm">
+                        <a href="{{ flexy_ftwo_product_url(item.variant, cart.shoppingStore.referenceCode) }}" class="font-medium text-gray-700 hover:text-gray-800">
+                            {{ item.variant.product.name }}
+                        </a>
+                    </h3>
+                </div>
+                <p class="mt-4 text-xl font-medium text-gray-900">R$ {{ promotionalPrice|number_format(2, ',', '.') }}</p>
+            </div>
+
+            <div class="mt-4 sm:mt-0 sm:pr-9">
+                <div class="absolute top-0 right-0">
+                    <a href="{{ path('flexy_ftwo_store_cart_delete', {id : itemId}) }}" class="inline-flex p-2 -m-2 text-gray-400 hover:text-gray-500" hx-confirm="Tem certeza que deseja remover o item da sacola?">
+                        <span class="sr-only">Remover</span>
+                        <svg class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            {% if item.attributeValues|length > 0 %}
+                <div class="pt-6 pb-4 space-y-4 text-sm">
+                    {% for cartItemAttributeValue in item.attributeValues %}
+                        {% set cartItemAttributeOption = cartItemAttributeValue.option %}
+                        {% set value = cartItemAttributeValue.value %}
+    
+                        {% if value %}
+                            <div>
+                                <h2 class="text-sm font-medium text-gray-900">{{ cartItemAttributeOption.attribute.name }}</h2>
+                                <div class="mt-1 prose-sm prose text-gray-500">{{ value }}</div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if item.variant.product.shoppingStore.name is not empty %}
+            <p class="flex mt-4 space-x-2 text-sm text-gray-700">
+                <svg class="flex-shrink-0 w-5 h-5 text-green-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                </svg>
+
+                <span>
+                    Vendido e entregue por <br class="block md:hidden" />
+                    <a class="font-medium" href="{{ path('flexy_ftwo_store_shoppingStore_index', { shoppingStoreReferenceCode: item.variant.product.shoppingStore.referenceCode }) }}">
+                        {{ item.variant.product.shoppingStore.name }}
+                    </a>
+                </span>
+            </p>
+        {% endif %}
+    </div>
+</li>

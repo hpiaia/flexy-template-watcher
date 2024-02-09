@@ -1,0 +1,49 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{% set customer = flexy_ftwo_current_customer() %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Conta' }, { 'title' : 'Meus dados' } ] } %}
+
+    <div class="container mt-12 md:mt-0">
+        {% include 'FlexyFtwoStoreBundle:Include:alerts.html.twig' with { 'alerts' : app.session.flashbag.get('store-customer-update-success'), 'error' : false } %}
+        
+        <div class="lg:flex lg:gap-x-16">
+            {% include 'FlexyFtwoStoreBundle:Customer:header.html.twig' with { active : 'update' } %}
+
+            <form class="w-full mt-12 lg:mt-0" method="post" action="{{ path('flexy_ftwo_store_customer_update') }}" x-data="customerForm" hx-disabled-elt="find button[type='submit']">
+                {{ forms.errors('store-error') }}
+
+                {{ forms.hidden(form.type, "cpf") }}
+                {{ forms.hidden(form.customerType, "1") }}
+
+                {% set redirectTo = app.request.get('redirect') %}
+                {% if redirectTo %}
+                    <input type="hidden" name="redirectTo" value="{{ redirectTo }}" />
+                {% endif %}
+
+                <div class="space-y-6">
+                    <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900">
+                        Informações pessoais
+                    </h2>
+
+                    {% include 'FlexyFtwoStoreBundle:Include-Form:customer-personal.html.twig' with { form: form } %}
+                </div>
+
+                <div class="mt-12 space-y-6">
+                    <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900">
+                        Endereço principal
+                    </h2>
+
+                    {% include 'FlexyFtwoStoreBundle:Include-Form:customer-address.html.twig' with { form: form } %}
+                </div>
+
+                <div class="mt-12">
+                    {{ forms.submit('Salvar alterações') }}
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

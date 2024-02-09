@@ -1,0 +1,52 @@
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{{- forms.input(form.firstname, "Nome", {
+    "required": true,
+    "autofocus": true,
+    "x-model.fill": "form.personal.name"
+}) -}}
+
+{{- forms.input(form.cpf.cpf, "CPF", {
+    "required": true,
+    "inputmode": "numeric",
+    "x-model.fill": "form.personal.cpf",
+    "x-mask": "999.999.999-99"
+}) -}}
+
+{{- forms.input(form.primaryPhone, "Telefone", {
+    "required": true,
+    "inputmode": "tel",
+    "x-model.fill": "form.personal.primaryPhone",
+    "x-mask": "(99) 99999-9999"
+}) -}}
+
+{{- forms.input(form.gender, "Gênero", {
+    "required": true,
+    "x-model.fill": "form.personal.gender"
+}) -}}
+
+<div>
+    <div class="flex">
+        <label for="input-dateOfBirth" class="block text-sm font-medium leading-6 text-gray-900">
+            Data de nascimento
+        </label>
+        
+        <span class="ml-1 text-red-500">*</span>
+    </div>
+
+    <div class="mt-2">
+        <input x-model="form.personal.dateOfBirthText" x-mask="99/99/9999" type="text" id="input-dateOfBirth" class="form-control">
+    </div>
+</div>
+
+{{- forms.hidden(form.dateOfBirth.day, "", {
+    "x-model.fill": "form.personal.dateOfBirth.day"
+}) -}}
+
+{{- forms.hidden(form.dateOfBirth.month, "", {
+    "x-model.fill": "form.personal.dateOfBirth.month"
+}) -}}
+
+{{- forms.hidden(form.dateOfBirth.year, "", {
+    "x-model.fill": "form.personal.dateOfBirth.year"
+}) -}}

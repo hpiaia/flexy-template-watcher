@@ -1,0 +1,55 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{% set details = flexy_ftwo_cart_list() %}
+
+{% set currentAddress = null %}
+{% for address in addresses %}
+    {% if address.postCode == app.request.get('zipCode')|replace({'-': ''}) %}
+        {% set currentAddress = address %}
+    {% endif %}
+{% endfor %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ {'title' : 'Minha sacola', 'url': '/cart' }, { 'title' : 'Finalizar pedido' } ] } %}
+
+    <div class="container mt-12 md:mt-0" x-data="{ newAddressModalOpen: false }">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Finalizar pedido
+        </h1>
+
+        <div class="py-6">
+            {{ forms.errors('store-checkout-error') }}
+        </div>
+
+        <form id="checkout-form" class="lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16" method="post" action="{{ path('flexy_ftwo_store_checkout_finish') }}" hx-disabled-elt="#checkout-button" hx-confirm="recaptcha">
+            {{ forms.recaptcha() }}
+
+            {% for cart in details.carts %}
+                {% for item in cart.items %}
+                    {% set stock = flexy_ftwo_stock_locate_by_parameters({ distributionCenterReferenceCode: cart.shoppingStore ? cart.shoppingStore.referenceCode : null, variantId: item.variant.id }) %}
+                    <input type="hidden" name="checkout[product][{{ stock.id }}][address]" value="{{ currentAddress.id }}">
+                    <input type="hidden" name="checkout[product][{{ stock.id }}][shippingMethod]" value="{{ app.request.get('shippingMethod') }}">
+                    <input type="hidden" name="checkout[product][{{ stock.id }}][shippingMethodIsFreeDelivery]" value="{{ app.request.get('shippingMethod') == 'shipping.method.pickuponplace' ? 'true' : 'false' }}">
+                    <input type="hidden" name="checkout[product][{{ stock.id }}][scheduledDeliveryPeriod]" value="{{ app.request.get('shippingSchedule') }}" />
+                {% endfor %}
+            {% endfor %}
+
+            <section class="space-y-12 lg:col-span-7">
+                {% include 'FlexyFtwoStoreBundle:Checkout:selectAddress.html.twig' with {details: details, addresses: addresses} %} 
+                {% include 'FlexyFtwoStoreBundle:Checkout:selectShippingMethod.html.twig' with {details: details} %} 
+                {# {% include 'FlexyFtwoStoreBundle:Checkout:selectShippingSchedule.html.twig' with {details: details} %}  #}
+                {% include 'FlexyFtwoStoreBundle:Checkout:selectPaymentMethod.html.twig' with {details: details, availablePaymentMethods: availablePaymentMethods} %} 
+            </section>
+
+            <div class="mt-16 lg:col-span-5 lg:mt-0">
+                <div class="px-4 py-6 mt-6 rounded-lg bg-gray-50 sm:p-6 lg:p-8" id="cart-totals">
+                    {% include 'FlexyFtwoStoreBundle:Checkout:totals.html.twig' with {details: details} %}
+                </div>
+            </div>
+        </form>
+
+        {% include 'FlexyFtwoStoreBundle:Include-Modal:add-address.html.twig' %} 
+    </div>
+{% endblock %}

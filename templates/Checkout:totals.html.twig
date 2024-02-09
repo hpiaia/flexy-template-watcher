@@ -1,0 +1,87 @@
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{% set shippingMethod = app.request.get('shippingMethod')|replace({'_': ''}) %}
+
+{% set total = details.masterCart.itemsTotal %}
+{% set discount = details.masterCart.itemsTotal - details.masterCart.itemsTotalWithDiscount %}
+
+{% set shippingTotal = 0 %}
+{% if app.request.get('zipCode') is not empty %}
+    {% for cart in details.carts %}
+        {% set shippingGroup = details.shipmentGroups[cart.shoppingStore ? cart.shoppingStore.id : 0] %}
+        {% set ship = shippingGroup.shippingMethodDto[shippingMethod] %}
+        
+        {% if ship.presentation %}
+            {% set shippingTotal = shippingTotal + ship.price %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% set canFinish = app.request.get('zipCode') is not empty and app.request.get('shippingMethod') is not empty and app.request.get('paymentMethod') is not empty %}
+
+<section aria-labelledby="checkout-summary-heading">
+    <h2 id="checkout-summary-heading" class="text-lg font-medium text-gray-900">Resumo do pedido</h2>
+
+    {% if app.request.get('zipCode') and shippingMethod is not empty %}
+        <div class="py-4">
+            {% for cart in details.carts if cart.items|length > 0 %}
+                {% set ship = details.shipmentGroups[cart.shoppingStore ? cart.shoppingStore.id : 0].shippingMethodDto[shippingMethod] %}
+
+                <dl class="mt-2 space-y-2">
+                    <div class="flex items-center justify-between {{ loop.first ? '' : 'border-t border-gray-200 pt-2' }}">
+                        <dt class="text-sm text-gray-600">{{ cart.shoppingstore.name }}</dt>
+                        <dd class="flex space-x-2 text-sm font-medium">
+                            {% if ship.isCarrier %} 
+                                <span class="text-gray-500">
+                                    {{ ship.deliverytimefrom > 5 ? ship.deliverytimefrom ~ 'm' : ship.deliverytimefrom ~ 'h' }} -
+                                    {{ ship.deliverytimeto > 5 ? ship.deliverytimeto ~ 'm' : ship.deliverytimeto ~ 'h' }}
+                                </span>
+                                <span>&bullet;</span>
+                                <span class="text-gray-900">R$ {{ ship.price|number_format(2, ',', '.') }}</span>
+                            {% elseif ship.name == 'shipping.method.pickuponplace' %}
+                                <span class="text-gray-900">Retirar em loja</span>
+                            {% else %}
+                                <span class="text-gray-900">Não disponível</span>
+                            {% endif %}
+                        </dd>
+                    </div>
+                </dl>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <dl class="mt-6 space-y-4">
+        <div class="flex items-center justify-between">
+            <dt class="text-sm text-gray-600">Subtotal</dt>
+            <dd class="text-sm font-medium text-gray-900">R$ {{ total|number_format(2, ',', '.') }}</dd>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+            <dt class="text-sm text-gray-600">Descontos</dt>
+            <dd class="text-sm font-medium text-gray-900">R$ {{ discount|number_format(2, ',', '.') }}</dd>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+            <dt class="text-sm text-gray-600">Frete</dt>
+            <dd class="text-sm font-medium text-gray-900">R$ {{ shippingTotal|number_format(2, ',', '.') }}</dd>
+        </div>
+
+        <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+            <dt class="text-base font-medium text-gray-900">Total do pedido</dt>
+            <dd class="text-base font-medium text-gray-900">R$ {{ (total - discount + shippingTotal)|number_format(2, ',', '.') }}</dd>
+        </div>
+    </dl>
+
+    <div class="mt-6">
+        {% if canFinish %}
+            <button id="checkout-button" type="submit" class="w-full btn-lg btn-primary">
+                {{ forms.spinner() }}
+                Finalizar pedido
+            </button>
+        {% else %}
+            <button id="checkout-button" class="w-full btn-lg btn-primary" disabled>
+                Finalizar pedido
+            </button>
+        {% endif %}
+    </div>
+</section>

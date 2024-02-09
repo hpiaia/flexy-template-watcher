@@ -1,0 +1,70 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{% block content %}
+    <div class="container py-6 md:py-12">
+        {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Criar minha conta' } ] } %}
+
+        <div class="grid h-full gap-24 mt-6 lg:grid-cols-2 md:mt-12">
+            <div>
+                <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">Criar nova conta</h1>
+
+                <p class="mt-2 text-sm leading-6 text-gray-500">
+                    Já tem uma conta?
+
+                    <a class="font-semibold text-primary-600 hover:text-primary-500" href="{{ path('flexy_ftwo_store_customer_login') }}">
+                        Faça login
+                    </a>
+                </p>
+
+                <form class="mt-10 space-y-6" method="post" action="{{ path('flexy_ftwo_store_customer_create') }}" x-data="customerForm" hx-disabled-elt="find button[type='submit']" hx-confirm="recaptcha">
+                    {{ forms.errors('store-error') }}
+
+                    {{ forms.hidden(customerForm.type, "cpf") }}
+                    {{ forms.hidden(customerForm.customerType, "1") }}
+
+                    {{ forms.recaptcha() }}
+
+                    <div x-wizard:step.rules="rules.personal" class="space-y-6">
+                        <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900">
+                            Informações pessoais
+                        </h2>
+
+                        {% include 'FlexyFtwoStoreBundle:Include-Form:customer-personal.html.twig' with { form: customerForm } %}
+                    </div>
+
+                    <div x-wizard:step.rules="rules.address" class="space-y-6" x-cloak>
+                        <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900">
+                            Endereço
+                        </h2>
+
+                        {% include 'FlexyFtwoStoreBundle:Include-Form:customer-address.html.twig' with { form: customerForm } %}
+                    </div>
+
+                    <div x-wizard:step.rules="rules.access" class="space-y-6" x-cloak>
+                        <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900">
+                            Dados de acesso
+                        </h2>
+
+                        {% include 'FlexyFtwoStoreBundle:Include-Form:customer.html.twig' with { form: customerForm } %}
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button type="button" @click="$wizard.back()" :disabled="$wizard.cannotGoBack()" class="btn btn-secondary">
+                            Voltar
+                        </button>
+
+                        <button type="button" @click="$wizard.forward()" :disabled="$wizard.cannotGoForward()" x-show="$wizard.isNotLast()" class="btn btn-primary" x-cloak>
+                            Avançar
+                        </button>
+
+                        {{ forms.submit("Criar minha conta", { "x-show": "$wizard.isLast()", ":disabled": "$wizard.isNotComplete()", "x-cloak": "" }) }}
+                    </div>
+                </form>
+            </div>
+
+            <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/cadastro.png" alt="" class="ml-auto hidden h-[400px] xl:block xl:h-[600px]" />
+        </div>
+    </div>
+{% endblock %}

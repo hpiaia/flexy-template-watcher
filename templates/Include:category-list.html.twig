@@ -1,0 +1,21 @@
+<section>
+    {% if title %}
+        <h2 class="text-xl font-semibold tracking-tight text-gray-900">{{ title }}</h2>
+    {% endif %}
+
+    <div class="overflow-visible swiper lg:py-2" x-data="slider({ type: 'carousel', slidesPerView: 'auto' })">
+        <div class="swiper-wrapper">
+            {% for category in categories %}
+                <a href="{{ path("flexy_ftwo_store_product_list", { categoryReferenceCode: category.referenceCode }) }}" class="w-auto p-4 mr-8 transition duration-300 transform swiper-slide rounded-xl hover:scale-105 hover:shadow-lg" preload preload-images="true">
+                    <div class="{{ small ? 'space-y-2' : 'space-y-4' }}  text-center">
+                        <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/categorias/{{ category.referenceCode|lower }}.png" alt="" class="{{ small ? 'w-16 h-16 lg:w-24 lg:h-24' : 'w-32 h-32 lg:w-48 lg:h-48' }} aspect-square object-cover rounded-full shadow mx-auto">
+                        <p class="font-medium">{{ category.name }}</p>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+
+        <div class="-ml-8 swiper-button-prev" x-ref="prev"></div>
+        <div class="-mr-8 swiper-button-next" x-ref="next"></div>
+    </div>
+</section> 

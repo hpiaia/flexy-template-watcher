@@ -1,298 +1,338 @@
 [
   {
     "name": "Alteração de cadastro do cliente",
-    "value": "FlexyFtwoStoreBundle:Customer:update.html.twig"
+    "value": "Customer:update.html.twig"
   },
   {
     "name": "Alteração de endereço",
-    "value": "FlexyFtwoStoreBundle:Customer:editAddress.html.twig"
+    "value": "Customer:editAddress.html.twig"
   },
   {
     "name": "Alteração de senha",
-    "value": "FlexyFtwoStoreBundle:Customer:resetPassword.html.twig"
+    "value": "Customer:resetPassword.html.twig"
   },
   {
     "name": "Cadastro de cliente",
-    "value": "FlexyFtwoStoreBundle:Customer:create.html.twig"
+    "value": "Customer:create.html.twig"
   },
   {
     "name": "Cadastro de novo endereço",
-    "value": "FlexyFtwoStoreBundle:Customer:addAddress.html.twig"
+    "value": "Customer:addAddress.html.twig"
   },
   {
     "name": "Perfil do cliente",
-    "value": "FlexyFtwoStoreBundle:Customer:profile.html.twig"
+    "value": "Customer:profile.html.twig"
   },
   {
     "name": "Minha Lista de desejos",
-    "value": "FlexyFtwoStoreBundle:Wishlist:my.html.twig"
+    "value": "Wishlist:my.html.twig"
   },
   {
     "name": "Visualização de uma lista de desejos",
-    "value": "FlexyFtwoStoreBundle:Wishlist:view.html.twig"
+    "value": "Wishlist:view.html.twig"
   },
   {
     "name": "Cadastro de lista de presentes",
-    "value": "FlexyFtwoStoreBundle:GiftList:create.html.twig"
+    "value": "GiftList:create.html.twig"
   },
   {
     "name": "Minhas listas de presentes",
-    "value": "FlexyFtwoStoreBundle:GiftList:index.html.twig"
+    "value": "GiftList:index.html.twig"
   },
   {
     "name": "Pesquisa por uma lista de presentes",
-    "value": "FlexyFtwoStoreBundle:GiftList:search.html.twig"
+    "value": "GiftList:search.html.twig"
   },
   {
     "name": "Visualização da lista de presentes",
-    "value": "FlexyFtwoStoreBundle:GiftList:details.html.twig"
+    "value": "GiftList:details.html.twig"
   },
   {
     "name": "Instruções de recuperação de senha",
-    "value": "FlexyFtwoStoreBundle:Customer:sendPassword.html.twig"
+    "value": "Customer:sendPassword.html.twig"
   },
   {
     "name": "Lembrar senha",
-    "value": "FlexyFtwoStoreBundle:Customer:forgotPassword.html.twig"
+    "value": "Customer:forgotPassword.html.twig"
   },
   {
     "name": "Login",
-    "value": "FlexyFtwoStoreBundle:Customer:login.html.twig"
+    "value": "Customer:login.html.twig"
   },
   {
     "name": "Detalhes da notícia",
-    "value": "FlexyFtwoStoreBundle:Article:details.html.twig"
+    "value": "Article:details.html.twig"
   },
   {
     "name": "Lista de notícias",
-    "value": "FlexyFtwoStoreBundle:Article:list.html.twig"
+    "value": "Article:list.html.twig"
   },
   {
     "name": "Detalhes do orçamento solicitado",
-    "value": "FlexyFtwoStoreBundle:Customer:quoteDetails.html.twig"
+    "value": "Customer:quoteDetails.html.twig"
   },
   {
     "name": "Orçamento",
-    "value": "FlexyFtwoStoreBundle:Quote:list.html.twig"
+    "value": "Quote:list.html.twig"
   },
   {
     "name": "Carrinho",
-    "value": "FlexyFtwoStoreBundle:Cart:list.html.twig"
+    "value": "Cart:list.html.twig"
   },
   {
     "name": "Checkout",
-    "value": "FlexyFtwoStoreBundle:Checkout:index.html.twig"
+    "value": "Checkout:index.html.twig"
   },
   {
     "name": "Detalhes do pedido",
-    "value": "FlexyFtwoStoreBundle:Customer:orderDetails.html.twig"
+    "value": "Customer:orderDetails.html.twig"
   },
   {
     "name": "Pedido efetuado com sucesso",
-    "value": "FlexyFtwoStoreBundle:Checkout:success.html.twig"
+    "value": "Checkout:success.html.twig"
   },
   {
     "name": "Base (Cabeçalho e rodapé)",
-    "value": "FlexyFtwoStoreBundle:Layout:base.html.twig"
+    "value": "Layout:base.html.twig"
   },
   {
     "name": "Contato",
-    "value": "FlexyFtwoStoreBundle:Contact:index.html.twig"
+    "value": "Contact:index.html.twig"
   },
   {
     "name": "Home",
-    "value": "FlexyFtwoStoreBundle:Index:index.html.twig"
+    "value": "Index:index.html.twig"
   },
   {
     "name": "Paginação",
-    "value": "FlexyFtwoStoreBundle:Paginator:pagination.html.twig"
+    "value": "Paginator:pagination.html.twig"
   },
   {
     "name": "Comparação de Produtos",
-    "value": "FlexyFtwoStoreBundle:Product:variant-compare.html.twig"
+    "value": "Product:variant-compare.html.twig"
   },
   {
     "name": "Detalhes do produto",
-    "value": "FlexyFtwoStoreBundle:Product:details.html.twig"
+    "value": "Product:details.html.twig"
   },
   {
     "name": "Lista de produtos",
-    "value": "FlexyFtwoStoreBundle:Product:list.html.twig"
+    "value": "Product:list.html.twig"
   },
   {
     "name": "Resultado da busca",
-    "value": "FlexyFtwoStoreBundle:Product:search.html.twig"
+    "value": "Product:search.html.twig"
   },
   {
     "name": "Atualização do perfil de representante",
-    "value": "FlexyFtwoStoreBundle:Agent:update.html.twig"
+    "value": "Agent:update.html.twig"
   },
   {
     "name": "Painel de vendas",
-    "value": "FlexyFtwoStoreBundle:Agent:dashboard.html.twig"
+    "value": "Agent:dashboard.html.twig"
   },
   {
     "name": "Perfil de representante",
-    "value": "FlexyFtwoStoreBundle:Agent:profile.html.twig"
+    "value": "Agent:profile.html.twig"
   },
   {
     "name": "Cadastro de nova loja",
-    "value": "FlexyFtwoStoreBundle:ShoppingStore:create.html.twig"
+    "value": "ShoppingStore:create.html.twig"
   },
   {
     "name": "Listagem de lojas do Shopping",
-    "value": "FlexyFtwoStoreBundle:ShoppingStore:list.html.twig"
+    "value": "ShoppingStore:list.html.twig"
   },
   {
     "name": "Loja criada com sucesso",
-    "value": "FlexyFtwoStoreBundle:ShoppingStore:create_success.html.twig"
+    "value": "ShoppingStore:create_success.html.twig"
   },
   {
     "name": "Termos de Uso para consumidor",
-    "value": "FlexyFtwoStoreBundle:TermOfUse:read.html.twig"
+    "value": "TermOfUse:read.html.twig"
   },
   {
     "name": "Termos de Uso para vendedor",
-    "value": "FlexyFtwoStoreBundle:TermOfUse:agree.html.twig"
+    "value": "TermOfUse:agree.html.twig"
   },
   {
     "name": "Alertas",
-    "value": "FlexyFtwoStoreBundle:Include:alerts.html.twig"
+    "value": "Include:alerts.html.twig"
   },
   {
     "name": "Breadcrumbs",
-    "value": "FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig"
+    "value": "Include:breadcrumbs.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Customer:header.html.twig",
-    "value": "FlexyFtwoStoreBundle:Customer:header.html.twig"
+    "name": "Customer:header.html.twig",
+    "value": "Customer:header.html.twig"
   },
   {
     "name": "Formulário de cadastro/atualização",
-    "value": "FlexyFtwoStoreBundle:Include-Form:customer.html.twig"
+    "value": "Include-Form:customer.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Profile:customer.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Profile:customer.html.twig"
+    "name": "Include-Profile:customer.html.twig",
+    "value": "Include-Profile:customer.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include:variant.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include:variant.html.twig"
+    "name": "Include:variant.html.twig",
+    "value": "Include:variant.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Page:login.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Page:login.html.twig"
+    "name": "Include-Page:login.html.twig",
+    "value": "Include-Page:login.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Contact:contact-list.html.twig",
-    "value": "FlexyFtwoStoreBundle:Contact:contact-list.html.twig"
+    "name": "Contact:contact-list.html.twig",
+    "value": "Contact:contact-list.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Contact:contact-form.html.twig",
-    "value": "FlexyFtwoStoreBundle:Contact:contact-form.html.twig"
+    "name": "Contact:contact-form.html.twig",
+    "value": "Contact:contact-form.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Cart:cart-list.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Cart:cart-list.html.twig"
+    "name": "Include-Cart:cart-list.html.twig",
+    "value": "Include-Cart:cart-list.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Cart:shipping-simulation.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Cart:shipping-simulation.html.twig"
+    "name": "Include-Cart:shipping-simulation.html.twig",
+    "value": "Include-Cart:shipping-simulation.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Cart:cart-totals.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Cart:cart-totals.html.twig"
+    "name": "Include-Cart:cart-totals.html.twig",
+    "value": "Include-Cart:cart-totals.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Cart:cart-buyx-gety-details.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Cart:cart-buyx-gety-details.html.twig"
+    "name": "Include-Cart:cart-buyx-gety-details.html.twig",
+    "value": "Include-Cart:cart-buyx-gety-details.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:AntiFraud:antiFraudCartSnippetCode.html.twig",
-    "value": "FlexyFtwoStoreBundle:AntiFraud:antiFraudCartSnippetCode.html.twig"
+    "name": "AntiFraud:antiFraudCartSnippetCode.html.twig",
+    "value": "AntiFraud:antiFraudCartSnippetCode.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Modal:add-address.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Modal:add-address.html.twig"
+    "name": "Include-Modal:add-address.html.twig",
+    "value": "Include-Modal:add-address.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:AntiFraud:antiFraudCheckoutSnippetCode.html.twig",
-    "value": "FlexyFtwoStoreBundle:AntiFraud:antiFraudCheckoutSnippetCode.html.twig"
+    "name": "AntiFraud:antiFraudCheckoutSnippetCode.html.twig",
+    "value": "AntiFraud:antiFraudCheckoutSnippetCode.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Checkout:orderAttributeValues.html.twig",
-    "value": "FlexyFtwoStoreBundle:Checkout:orderAttributeValues.html.twig"
+    "name": "Checkout:orderAttributeValues.html.twig",
+    "value": "Checkout:orderAttributeValues.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Checkout:renderPixQrCodeAndCopyAndPaste.js.twig",
-    "value": "FlexyFtwoStoreBundle:Checkout:renderPixQrCodeAndCopyAndPaste.js.twig"
+    "name": "Checkout:renderPixQrCodeAndCopyAndPaste.js.twig",
+    "value": "Checkout:renderPixQrCodeAndCopyAndPaste.js.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Customer:subscriptionCanceller.js.twig",
-    "value": "FlexyFtwoStoreBundle:Customer:subscriptionCanceller.js.twig"
+    "name": "Customer:subscriptionCanceller.js.twig",
+    "value": "Customer:subscriptionCanceller.js.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Checkout:renderApplePayButton.js.twig",
-    "value": "FlexyFtwoStoreBundle:Checkout:renderApplePayButton.js.twig"
+    "name": "Checkout:renderApplePayButton.js.twig",
+    "value": "Checkout:renderApplePayButton.js.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Checkout:renderPicPayQrCode.js.twig",
-    "value": "FlexyFtwoStoreBundle:Checkout:renderPicPayQrCode.js.twig"
+    "name": "Checkout:renderPicPayQrCode.js.twig",
+    "value": "Checkout:renderPicPayQrCode.js.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Base:header.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Base:header.html.twig"
+    "name": "Include-Base:header.html.twig",
+    "value": "Include-Base:header.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:AntiFraud:antiFraudBaseSnippetCode.html.twig",
-    "value": "FlexyFtwoStoreBundle:AntiFraud:antiFraudBaseSnippetCode.html.twig"
+    "name": "AntiFraud:antiFraudBaseSnippetCode.html.twig",
+    "value": "AntiFraud:antiFraudBaseSnippetCode.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Base:footer.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Base:footer.html.twig"
+    "name": "Include-Base:footer.html.twig",
+    "value": "Include-Base:footer.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Common:main-banner.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Common:main-banner.html.twig"
+    "name": "Include-Common:main-banner.html.twig",
+    "value": "Include-Common:main-banner.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include:sidebar.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include:sidebar.html.twig"
+    "name": "Include:sidebar.html.twig",
+    "value": "Include:sidebar.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include:variant-list-block.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include:variant-list-block.html.twig"
+    "name": "Include:variant-list-block.html.twig",
+    "value": "Include:variant-list-block.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Javascript:_sidebar.html.twig",
-    "value": "FlexyFtwoStoreBundle:Javascript:_sidebar.html.twig"
+    "name": "Javascript:_sidebar.html.twig",
+    "value": "Javascript:_sidebar.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Product:store-info.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Product:store-info.html.twig"
+    "name": "Include-Product:store-info.html.twig",
+    "value": "Include-Product:store-info.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Product:grid-closed.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Product:grid-closed.html.twig"
+    "name": "Include-Product:grid-closed.html.twig",
+    "value": "Include-Product:grid-closed.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include-Customer:list.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include-Customer:list.html.twig"
+    "name": "Include-Customer:list.html.twig",
+    "value": "Include-Customer:list.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include:product-related-slider.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include:product-related-slider.html.twig"
+    "name": "Include:product-related-slider.html.twig",
+    "value": "Include:product-related-slider.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Include:variant-list.html.twig",
-    "value": "FlexyFtwoStoreBundle:Include:variant-list.html.twig"
+    "name": "Include:variant-list.html.twig",
+    "value": "Include:variant-list.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:Javascript:_list.html.twig",
-    "value": "FlexyFtwoStoreBundle:Javascript:_list.html.twig"
+    "name": "Include:shopping-store-comments.html.twig",
+    "value": "Include:shopping-store-comments.html.twig"
   },
   {
-    "name": "FlexyFtwoStoreBundle:ShoppingStore:_form.html.twig",
-    "value": "FlexyFtwoStoreBundle:ShoppingStore:_form.html.twig"
+    "name": "Javascript:_list.html.twig",
+    "value": "Javascript:_list.html.twig"
+  },
+  {
+    "name": "ShoppingStore:_form.html.twig",
+    "value": "ShoppingStore:_form.html.twig"
+  },
+  {
+    "name": "Include:store-list.html.twig",
+    "value": "Include:store-list.html.twig"
+  },
+  {
+    "name": "Include:category-list.html.twig",
+    "value": "Include:category-list.html.twig"
+  },
+  {
+    "name": "Include-Common:promotional-slider.html.twig",
+    "value": "Include-Common:promotional-slider.html.twig"
+  },
+  {
+    "name": "Components:forms.html.twig",
+    "value": "Components:forms.html.twig"
+  },
+  {
+    "name": "Include:variant-filters.html.twig",
+    "value": "Include:variant-filters.html.twig"
+  },
+  {
+    "name": "Include-Cart:cart-list-item.html.twig",
+    "value": "Include-Cart:cart-list-item.html.twig"
+  },
+  {
+    "name": "Customer:address.html.twig",
+    "value": "Customer:address.html.twig"
+  },
+  {
+    "name": "Include-Form:customer-personal.html.twig",
+    "value": "Include-Form:customer-personal.html.twig"
+  },
+  {
+    "name": "Include-Form:customer-address.html.twig",
+    "value": "Include-Form:customer-address.html.twig"
   }
 ]

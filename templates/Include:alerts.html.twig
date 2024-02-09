@@ -1,0 +1,11 @@
+{% set alertsJson = [] %}
+{% if alerts|length > 0 %}
+    {% for alert in alerts %}
+        {% set alertsJson = alertsJson | merge([{
+            'type': error ? 'error' : 'success',
+            'message': (alert|trans)|raw,
+        }]) %}
+    {% endfor %}
+{% endif %}
+
+<div x-data="alerts({{ alertsJson | json_encode }})"></div>

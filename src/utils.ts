@@ -3,8 +3,9 @@ import { watch } from 'chokidar'
 import { readdir } from 'fs/promises'
 import { serialize } from 'object-to-formdata'
 
-import { ALL_TEMPLATES, SESSION_TOKEN, TEMPLATES_PATH } from './config'
+import { ALL_TEMPLATES, TEMPLATES_PATH } from './config'
 import { logger } from './logger'
+import { session } from './session'
 import { Template } from './template'
 
 export async function request(
@@ -15,7 +16,7 @@ export async function request(
   return fetch(url, {
     method,
     body: method === 'post' && body ? serialize(body) : undefined,
-    headers: { cookie: `FLEXYSESSID=${SESSION_TOKEN}` },
+    headers: { cookie: `FLEXYSESSID=${session.id}` },
   }).then((res) => res.text())
 }
 
@@ -55,8 +56,8 @@ export async function selectTemplates() {
   }
 
   if (type === 'only-new') {
-    const myTemplates = await readdir(TEMPLATES_PATH)
-    return ALL_TEMPLATES.filter((template) => !myTemplates.includes(template.value))
+    const templates = await readdir(TEMPLATES_PATH)
+    return ALL_TEMPLATES.filter((template) => !templates.includes(template.value))
   }
 
   return ALL_TEMPLATES

@@ -1,0 +1,88 @@
+{% if filters and filters.useSearchParameters %}
+	{% if not filters.categoryReferenceCode %}
+		{% set filters = filters|merge({ categoryReferenceCode: filters.category.referenceCode }) %}
+	{% endif %}
+{% endif %}
+
+{% macro sort_item(label, filters, index, active) %}
+	<a href="{{ path('flexy_ftwo_store_product_list', filters)|replace({'/?': '?'}) }}" class="block px-4 py-2 text-sm {{ active ? 'font-medium text-gray-900' : 'text-gray-500' }}" :class="{ 'bg-gray-100': activeIndex === {{ index }} }" role="menuitem" tabindex="-1" id="menu-item-{{ index }}" @mouseenter="onMouseEnter($event)" @mousemove="onMouseMove($event, {{ index }})" @mouseleave="onMouseLeave($event)" @click="open = false; focusButton()">
+		{{ label }}
+	</a>
+{% endmacro %}
+
+<section aria-labelledby="filter-heading">
+	<h2 id="filter-heading" class="sr-only">Filtros</h2>
+
+	<div class="pb-4 bg-white border-b border-gray-200">
+		<div class="container flex items-center justify-between">
+			<div x-data="menu({ open: false })" x-init="init()" @keydown.escape.stop="open = false; focusButton()" @click.away="onClickAway($event)" class="relative inline-block text-left">
+				<div>
+					<button type="button" class="inline-flex items-center justify-center text-sm font-medium text-gray-700 group hover:text-gray-900" id="menu-button" x-ref="button" @click="onButtonClick()" @keyup.space.prevent="onButtonEnter()" @keydown.enter.prevent="onButtonEnter()" aria-expanded="false" aria-haspopup="true" x-bind:aria-expanded="open.toString()" @keydown.arrow-up.prevent="onArrowUp()" @keydown.arrow-down.prevent="onArrowDown()">
+						{% if filters.sortOrder == 'createdAt-desc' %}
+							Lançamentos
+						{% elseif filters.sortOrder == 'sales-desc' %}
+							Mais vendidos
+						{% elseif filters.sortOrder == 'price-asc' %}
+							Menor preço
+						{% elseif filters.sortOrder == 'price-desc' %}
+							Maior preço
+						{% elseif filters.sortOrder == 'name-asc' %}
+							Nome A-Z
+						{% elseif filters.sortOrder == 'name-desc' %}
+							Nome Z-A
+						{% else %}
+							Ordenar por
+						{% endif %}
+
+						<svg class="flex-shrink-0 w-5 h-5 ml-1 -mr-1 text-gray-400 group-hover:text-gray-500" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
+							<path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd"></path>
+						</svg>
+					</button>
+				</div>
+
+				<div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="absolute left-0 z-10 w-40 mt-2 origin-top-left bg-white rounded-md shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none" x-ref="menuItems" x-bind:aria-activedescendant="activeDescendant" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" @keydown.arrow-up.prevent="onArrowUp()" @keydown.arrow-down.prevent="onArrowDown()" @keydown.tab="open = false" @keydown.enter.prevent="open = false; focusButton()" @keyup.space.prevent="open = false; focusButton()" style="display: none;">
+					<div class="py-1" role="none">
+						{{ _self.sort_item("Lançamentos", filters | merge({ sortOrder: "createdAt-desc" }), 1, filters.sortOrder == "createdAt-desc") }}
+						{{ _self.sort_item("Mais vendidos", filters | merge({ sortOrder: "sales-desc" }), 2, filters.sortOrder == "sales-desc") }}
+						{{ _self.sort_item("Menor preço", filters | merge({ sortOrder: "price-asc" }), 3, filters.sortOrder == "price-asc") }}
+						{{ _self.sort_item("Maior preço", filters | merge({ sortOrder: "price-desc" }), 4, filters.sortOrder == "price-desc") }}
+						{{ _self.sort_item("Nome A-Z", filters | merge({ sortOrder: "name-asc" }), 5, filters.sortOrder == "name-asc") }}
+						{{ _self.sort_item("Nome Z-A", filters | merge({ sortOrder: "name-desc" }), 6, filters.sortOrder == "name-desc") }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="bg-gray-100">
+		<div class="container flex items-center h-16 py-3">
+			<h3 class="text-sm font-medium text-gray-500">
+				Filtros
+			</h3>
+
+			<div aria-hidden="true" class="w-px h-5 ml-4 bg-gray-300"></div>
+
+			<div class="ml-4 sm:mt-0">
+				<div class="flex flex-wrap items-center -m-1">
+					{% if category %}
+						<div class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 px-3 text-sm font-medium text-gray-900">
+							<span>{{ category.name }}</span>
+						</div>
+					{% endif %}
+
+					{% if shoppingStore %}
+						<div class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 px-3 text-sm font-medium text-gray-900">
+							<span>{{ shoppingStore.name }}</span>
+						</div>
+					{% endif %}
+
+					{% if query %}
+						<div class="m-1 inline-flex items-center rounded-full border border-gray-200 bg-white py-1.5 px-3 text-sm font-medium text-gray-900">
+							<span>{{ query }}</span>
+						</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

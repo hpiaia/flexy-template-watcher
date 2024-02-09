@@ -1,0 +1,53 @@
+{% set finalPrice = variant.finalPrice %}
+
+{% set url = giftList is not defined ? variant.url : path('flexy_ftwo_store_product_details', {
+    'masterVariantReferenceCode': variant.referenceCode,
+    'slug': variant.product.slug,
+    'giftListReferenceCode': giftList.referenceCode
+}) %}
+
+{% if store.info.usesMultipleSales %}
+    {% if store.shoppingStore %}
+        {% set url = f2_store_shoppingStore_url('productDetails', {
+            'masterVariantReferenceCode': variant.referenceCode,
+            'slug': variant.product.slug,
+        }) %}
+        {% set dc = store.shoppingStore ? store.shoppingStore.distributionCenter.referenceCode : null %}
+        {% set finalPrice = flexy_ftwo_variantlist_variant_price(variant, dc) %}
+    {% else %}
+        {% set dc = variant.product.shoppingStore and variant.product.shoppingStore.distributionCenter ? variant.product.shoppingStore.distributionCenter.referenceCode : null %}
+        {% set finalPrice = flexy_ftwo_variantlist_variant_price(variant, dc) %}
+        {% if giftList is not defined %}
+            {% set url = variant.url %}
+        {% else %}
+            {% if variant.product.shoppingStore is null %}
+                {% set url = path('flexy_ftwo_store_product_details', {
+                    'masterVariantReferenceCode': variant.referenceCode,
+                    'slug': variant.product.slug,
+                    'giftListReferenceCode': giftList.referenceCode,
+                    'giftId': gift.id
+                }) %}
+            {% else %}
+                {% set url = path('flexy_ftwo_store_shoppingStore_product_details', {
+                    'shoppingStoreReferenceCode': variant.product.shoppingStore.referenceCode,
+                    'masterVariantReferenceCode': variant.referenceCode,
+                    'slug': variant.product.slug,
+                    'giftListReferenceCode': giftList.referenceCode,
+                    'giftId': gift.id
+                }) %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+{% endif %}
+
+{% set hasStock = flexy_ftwo_variant_dto_has_stock(variant, dc) %}
+{% set promotion = f2_store_variant_promotion_catalog_details(variant, (dc is defined) ? dc : null) %}
+{% set installments = flexy_ftwo_installment_maximum_calculator(promotion ? promotion.finalPrice : finalPrice, { 'variantReferenceCode': variant.referenceCode }) %}
+
+<a href="{{ url }}" class="group" preload preload-images="true">
+    <div class="w-full overflow-hidden bg-gray-200 rounded-lg">
+        <img src="{{ f2_store_image_placeholder_medium(variant.product.masterImage) }}" alt="{{ variant.product.name }}" class="h-full w-full aspect-[1/1] object-contain bg-white object-center group-hover:opacity-75">
+    </div>
+    <h3 class="mt-4 text-sm text-gray-700">{{ variant.product.name }}</h3>
+    <p class="mt-2 text-2xl font-medium text-gray-900">R$ {{ finalPrice|number_format(2, ',', '.') }}</p>
+</a>

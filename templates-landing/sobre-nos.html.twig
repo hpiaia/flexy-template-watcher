@@ -1,0 +1,56 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Sobre nós' } ] } %}
+
+    <div class="container py-12">
+        <div class="mt-12 lg:grid lg:grid-cols-12">
+            <div class="text-lg leading-8 text-gray-600 lg:col-span-8">
+                <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">Sobre nós</h1>
+
+                <p class="mt-12">A equipe <strong>Mimo Express</strong> acredita que presetear é mais do que apenas comprar um objeto, é transmitir sentimentos, amor e carinho.</p>
+                <p class="mt-2">Foi assim que nasceu a ideia de criar um espaço onde presentes ganham vida e chegam aos corações mais rápido que nunca.</p>
+                <p class="mt-2">💜</p>
+            </div>
+
+            <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/mascote-1.png" class="hidden w-64 lg:block lg:col-span-4">
+        </div>
+
+        <div class="mt-16 2xl:mt-6">
+            <p class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Nossas vantagens</p>
+
+            <div class="mt-6 sm:mt-12">
+                <dl class="grid grid-cols-1 gap-x-32 gap-y-10 lg:grid-cols-2 lg:gap-y-16">
+                    <div class="relative">
+                        <dt class="text-base font-semibold leading-7 text-gray-900">
+                            <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/sobre-1.png" alt="Ícone de funcionalidade" class="w-16 h-16 mb-6" />
+                            <span>Conveniência</span>
+                        </dt>
+                        <dd class="mt-2 text-base leading-7 text-gray-600">Comprar presentes online nunca foi tão fácil. Navegue pela nossa plataforma a qualquer hora do dia, escolha entre uma variedade de produtos e faça seu pedido no conforto de sua casa.</dd>
+                    </div>
+                    <div class="relative">
+                        <dt class="text-base font-semibold leading-7 text-gray-900">
+                            <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/sobre-2.png" alt="Ícone de funcionalidade" class="w-16 h-16 mb-6" />
+                            <span>Variedade de produtos</span>
+                        </dt>
+                        <dd class="mt-2 text-base leading-7 text-gray-600">Na Mimo Express, a diversidade é nossa marca registrada. Reunimos produtos de diferentes vendedores locais, oferecendo a você uma ampla gama de opções. Encontre presentes personalizados e únicos para cada ocasião.</dd>
+                    </div>
+                    <div class="relative">
+                        <dt class="text-base font-semibold leading-7 text-gray-900">
+                            <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/sobre-3.png" alt="Ícone de funcionalidade" class="w-16 h-16 mb-6" />
+                            <span>Estumulo à economia local</span>
+                        </dt>
+                        <dd class="mt-2 text-base leading-7 text-gray-600"> Valorizamos os negócios locais e estamos empenhados em impulsionar o consumo na região. Ao escolher a Mimo Express, você está contribuindo para o crescimento da economia local.</dd>
+                    </div>
+                    <div class="relative">
+                        <dt class="text-base font-semibold leading-7 text-gray-900">
+                            <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/sobre-4.png" alt="Ícone de funcionalidade" class="w-16 h-16 mb-6" />
+                            <span>Entrega rápida</span>
+                        </dt>
+                        <dd class="mt-2 text-base leading-7 text-gray-600">A entrega no mesmo dia é o nosso diferencial. Seja para presentes de última hora ou compras urgentes, estamos prontos para atender às suas necessidades.</dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+{% endblock %}

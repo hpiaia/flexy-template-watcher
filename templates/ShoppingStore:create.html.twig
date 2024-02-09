@@ -1,0 +1,90 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Cadastrar minha loja' } ] } %}
+
+    <div class="container mt-12 space-y-12 md:mt-0">
+        <div class="grid grid-cols-1 mt-12 gap-x-8 gap-y-16 sm:gap-y-20 lg:grid-cols-2">
+            <div class="lg:pr-8">
+                <div class="lg:max-w-lg">
+                    <p class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                        Faça parte da revolução dos presentes express!
+                    </p>
+
+                    <p class="mt-6 text-lg leading-8 text-gray-600">
+                        Você é proprietário(a) de uma loja incrível? Quer
+                        expandir seus negócios e atingir um público mais amplo? Junte-se ao Marketplace Mimo Express
+                        agora mesmo e coloque seus produtos nas mãos dos clientes em um piscar de olhos.
+                    </p>
+
+                    <dl class="max-w-xl mt-10 space-y-8 text-base leading-7 text-gray-600 lg:max-w-none">
+                        <div class="relative pl-9">
+                            <dt class="inline font-semibold text-gray-900">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute w-5 h-5 left-1 top-1 text-primary-600" aria-hidden="true">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <path d="m9 11 3 3L22 4"></path>
+                                </svg>
+                                Amplie seu alcance.
+                            </dt>
+                            <dd class="inline">
+                                Alcance novos públicos e impulsione suas vendas ao fazer parte de um
+                                marketplace inovador.
+                            </dd>
+                        </div>
+                        <div class="relative pl-9">
+                            <dt class="inline font-semibold text-gray-900">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute w-5 h-5 left-1 top-1 text-primary-600" aria-hidden="true">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <path d="m9 11 3 3L22 4"></path>
+                                </svg>
+                                Aproveite datas especiais.
+                            </dt>
+                            <dd class="inline">
+                                Potencialize suas vendas em datas sazonais e momentos especiais ao
+                                oferecer presentes expressos.
+                            </dd>
+                        </div>
+                        <div class="relative pl-9">
+                            <dt class="inline font-semibold text-gray-900">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute w-5 h-5 left-1 top-1 text-primary-600" aria-hidden="true">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <path d="m9 11 3 3L22 4"></path>
+                                </svg>
+                                Exposição Exponencial.
+                            </dt>
+                            <dd class="inline">
+                                Aproveite nossa plataforma para alcançar clientes em busca de presentes
+                                únicos e emocionantes.
+                            </dd>
+                        </div>
+                        <div class="relative pl-9">
+                            <dt class="inline font-semibold text-gray-900">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute w-5 h-5 left-1 top-1 text-primary-600" aria-hidden="true">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <path d="m9 11 3 3L22 4"></path>
+                                </svg>
+                                Entrega Rápida.
+                            </dt>
+                            <dd class="inline">
+                                Ofereça a conveniência da entrega no mesmo dia e atraia compradores que
+                                buscam soluções rápidas.
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+
+                <h2 class="mt-12 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">
+                    Entre em contato conosco para <br /> fazer seu cadastro:
+                </h2>
+
+                <div class="mt-10">
+                    <a href="/contato?subject=Quero%20me%20cadastrar%20como%20lojista" class="w-64 btn-lg btn-primary">
+                        Vamos lá
+                    </a>
+                </div>
+            </div>
+
+            <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/criar-loja.png" alt="Ilustração de cadastro" class="rounded-xl0 w-[48rem] sm:w-[57rem]" />
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% set clearSaleEnabled = flexy_ftwo_admin_anti_fraud_configuration_is_clearsale_configurated() %}
+{%  if clearSaleEnabled %}
+    <input type="hidden" class="flexy-anti-fraud-analysis" name="checkout[anti-fraud][customer][email]" value="{{ customer.user.email }}" />
+    <input type="hidden" class="flexy-anti-fraud-analysis" name="checkout[anti-fraud][session][id]" value="{{ app.session.id }}" />
+    <input type="hidden" class="flexy-anti-fraud-analysis" name="checkout[anti-fraud][cart][total]" value="{{ cart.billingTotal|number_format(2, ',', '.') }}" />
+    {% for item in allItems %}
+        <input type="hidden" class="flexy-anti-fraud-analysis" name="checkout[anti-fraud][product][{{ item.variant.id }}][name]" value="{{ item.variant.presentation }}" />
+    {% endfor %}
+{% endif %}
+
+{% set clearSaleEnabled = flexy_ftwo_admin_anti_fraud_configuration_is_total_clearsale_configurated() %}
+{%  if clearSaleEnabled %}
+    <input type="hidden" class="flexy-anti-fraud-analysis" name="checkout[anti-fraud][customer][email]" value="{{ customer.user.email }}" />
+    <input type="hidden" class="flexy-anti-fraud-analysis" name="checkout[anti-fraud][session][id]" value="{{ app.session.id }}" />
+    <input type="hidden" class="flexy-anti-fraud-analysis" name="checkout[anti-fraud][cart][total]" value="{{ cart.billingTotal|number_format(2, ',', '.') }}" />
+    {% for item in allItems %}
+        <input type="hidden" class="flexy-anti-fraud-analysis" name="checkout[anti-fraud][product][{{ item.variant.id }}][name]" value="{{ item.variant.presentation }}" />
+    {% endfor %}
+{% endif %}

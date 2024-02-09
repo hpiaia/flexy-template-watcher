@@ -1,0 +1,27 @@
+{% set subject = app.request.get('subject') %}
+
+{% set form = shoppingStore ? form : form.createView %}
+
+<form method="post" action="{{ shoppingStore ? f2_store_shoppingStore_url('contact', {shoppingStoreReferenceCode : shoppingStore.referenceCode}) : path('flexy_ftwo_store_contact') }}" class="max-w-xl mx-auto mt-16 space-y-6 sm:mt-20" hx-disabled-elt="find button[type='submit']" hx-confirm="recaptcha">
+    {% include 'FlexyFtwoStoreBundle:Include:alerts.html.twig' with { 'alerts' : app.session.flashbag.get('store-contact-success'), 'error' : false } %}
+
+    {{ forms.errors('store-contact-error') }}
+
+    {{ forms.recaptcha()}}
+
+    {{ forms.input(form.name, "Nome") }}
+    {{ forms.input(form.email, "E-mail") }}
+    {{ forms.input(form.phone, "Telefone") }}
+    {{ forms.input(form.subject, "Assunto", {
+        'value': subject,
+    }) }}
+
+    {{ forms.input(form.message, "Mensagem", {
+        'rows': 8,
+        'placeholder': subject == "Quero me cadastrar como lojista"
+            ? "Informe o nome da sua loja e mais informações sobre seus produtos."
+            : "Informe o máximo de detalhes possível para que possamos te ajudar.",
+    }) }}
+    
+    {{ forms.submit("Enviar mensagem") }}
+</form>

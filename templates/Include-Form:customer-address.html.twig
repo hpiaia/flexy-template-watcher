@@ -1,0 +1,51 @@
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+<input type="hidden" name="customer[defaultShippingAddress][country]" value="Brasil"/>
+
+{{- forms.input(form.defaultShippingAddress.postcode, "CEP", {
+    "inputmode": "numeric",
+    "x-model.lazy.fill": "form.address.postcode",
+    "x-mask": "99999-999",
+}) -}}
+
+<div class="flex space-x-6">
+    <div class="flex-1">
+        {{- forms.input(form.defaultShippingAddress.state, "Estado", {
+            "x-model.fill": "form.address.state"
+        }) -}}
+    </div>
+
+    <div class="flex-1">
+        {{- forms.input(form.defaultShippingAddress.city, "Cidade", {
+            "x-model.fill": "form.address.city"
+        }) -}}
+    </div>
+</div>
+
+<div class="flex space-x-6">
+    <div class="flex-1">
+        {{- forms.input(form.defaultShippingAddress.district, "Bairro", {
+            "x-model.fill": "form.address.district"
+        }) -}}
+    </div>
+
+    <div class="flex-1">
+        {{- forms.input(form.defaultShippingAddress.street, "Rua", {
+            "x-model.fill": "form.address.street"
+        }) -}}
+    </div>
+</div>
+
+<div class="flex space-x-6">
+    <div class="flex-1">
+        {{- forms.input(form.defaultShippingAddress.number, "Número", {
+            "x-model.fill": "form.address.number"
+        }) -}}
+    </div>
+
+    <div class="flex-1">
+        {{- forms.input(form.defaultShippingAddress.complement, "Complemento", {
+            "x-model.fill": "form.address.complement"
+        }) -}}
+    </div>
+</div>

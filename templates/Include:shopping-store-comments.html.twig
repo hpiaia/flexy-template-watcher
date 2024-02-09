@@ -1,0 +1,64 @@
+<div class="container py-6">
+    <h2 class="text-3xl font-bold tracking-tight text-gray-900">
+        Avaliações da loja
+    </h2>
+    
+    <div class="pb-10 mt-6 space-y-10 border-t border-b border-gray-200 divide-y divide-gray-200">
+
+        {% for comment in comments %}
+            <div class="pt-10 lg:grid lg:grid-cols-12 lg:gap-x-8">
+                <div class="lg:col-span-8 lg:col-start-5 xl:col-span-9 xl:col-start-4 xl:grid xl:grid-cols-3 xl:items-start xl:gap-x-8">
+                    <div class="flex items-center xl:col-span-1">
+                        <div class="flex items-center">
+                            {% for i in 1..5 %}
+                                <svg class="flex-shrink-0 w-5 h-5 {{ i <= comment.rating.rating ? 'text-yellow-400' : 'text-gray-200' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z" clip-rule="evenodd" />
+                                </svg>
+                            {% endfor %}
+                        </div>
+                        <p class="ml-3 text-sm text-gray-700">{{ comment.rating.rating }}<span class="sr-only"> de 5 estrelas</span></p>
+                    </div>
+
+                    <div class="mt-4 lg:mt-6 xl:col-span-2 xl:mt-0">
+                        <div class="mt-3 space-y-6 text-sm text-gray-500">
+                            {{ comment.content }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center mt-6 text-sm lg:col-span-4 lg:col-start-1 lg:row-start-1 lg:mt-0 lg:flex-col lg:items-start xl:col-span-3">
+                    <p class="font-medium text-gray-900">{{ comment.customer.firstName }}</p>
+                    <time datetime="2021-01-06" class="pl-4 ml-4 text-gray-500 border-l border-gray-200 lg:ml-0 lg:mt-2 lg:border-0 lg:pl-0">{{ comment.createdAt }}</time>
+                </div>
+            </div>
+        {% endfor %}
+
+        {% if comments|length < 1 %}
+            <p class="mt-10 text-center text-gray-500">Esta loja ainda não possui avaliações, seja o primeiro a avaliar!</p>
+        {% endif %}
+
+    </div>
+
+    {% if flexy_ftwo_current_user_exists() %}
+        <form class="space-y-6" method="post" action="/shopping-store-review/create" hx-disabled-elt="find button[type='submit']" hx-on="htmx:afterRequest: toast('Seu comentário foi enviado com sucesso, obrigado!')">
+            <input type="hidden" name="shopping_store_id" value="{{ store.id }}">
+
+            <textarea name="comment" rows="8" class="form-control" placeholder="Deixe um comentário sobre o que você achou dessa loja!" required></textarea>
+
+            <select class="form-control" name="rating" required>
+                <option value="">Selecione uma nota</option>
+                <option value="1">1 estrela</option>
+                <option value="2">2 estrelas</option>
+                <option value="3">3 estrelas</option>
+                <option value="4">4 estrelas</option>
+                <option value="5">5 estrelas</option>
+            </select>
+
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    {% else %}
+        <p class="mt-10 text-center text-gray-500">
+            <a href="/customer/login" class="font-semibold text-primary-600 hover:text-primary-700">Faça login</a> para poder enviar uma avaliação.
+        </p>
+    {% endif %}
+</div>

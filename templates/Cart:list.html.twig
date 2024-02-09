@@ -1,0 +1,33 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% set details = flexy_ftwo_cart_list() %}
+
+{% set total = details.masterCart.itemsTotal %}
+{% set discount = details.masterCart.itemsTotal - details.masterCart.itemsTotalWithDiscount %}
+
+{% set shippingTotal = 0 %}
+{% if app.request.get('zipCode') is not empty %}
+    {% for cart in details.carts if cart.items|length > 0 %}
+        {% set shippingGroup = details.shipmentGroups[cart.shoppingStore ? cart.shoppingStore.id : 0] %}
+        {% set ship = shippingGroup.shippingMethodDto|first %}
+        
+        {% if ship.presentation %}
+            {% set shippingTotal = shippingTotal + ship.price %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with {path : [ {'title' : 'Minha sacola' } ]} %}
+
+    <div class="container mt-12 md:mt-0">
+        <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+            Minha sacola
+        </h1>
+
+        <div class="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+            {% include 'FlexyFtwoStoreBundle:Include/Cart:cart-list.html.twig' with {details: details} %}
+            {% include 'FlexyFtwoStoreBundle:Include/Cart:cart-totals.html.twig' with {details: details, total: total, discount: discount, shippingTotal: shippingTotal} %}
+        </div>
+    </div>
+{% endblock %}

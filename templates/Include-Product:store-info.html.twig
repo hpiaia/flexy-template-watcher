@@ -1,0 +1,40 @@
+{% if shoppingStore %}
+    {% set adminShoppingStore = flexy_ftwo_admin_get_shopping_store(shoppingStore.id) %}
+
+    <a href="{{ path('flexy_ftwo_store_shoppingStore_index', { shoppingStoreReferenceCode: shoppingStore.referenceCode }) }}" class="flex items-center w-auto space-x-4 rounded-xl" x-data="storeListItem('{{ shoppingStore.referenceCode }}', { lat: {{ adminShoppingStore.distributionCenter.latitude }}, lng: {{ adminShoppingStore.distributionCenter.longitude }} })">
+        <img src="{{ adminShoppingStore.logo ? adminShoppingStore.logo.path : flexy_ftwo_account_resource_url_img('img/product-placeholder.gif') }}" alt="" class="object-contain w-20 h-20 shadow">
+
+        <div class="space-y-2">
+            <p class="flex items-center space-x-4">
+                <span class="font-semibold">{{ shoppingStore.name }}</span>
+
+                {% if shoppingStore.descriptionShort is not empty %}
+                    <span class="" x-data x-tooltip.raw="{{ shoppingStore.descriptionShort }}">
+                        <svg class="absolute w-6 h-6 text-yellow-400 motion-safe:animate-ping" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                        </svg>
+                        <svg class="w-6 h-6 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                {% endif %}
+            </p>
+
+            <p class="text-sm flex items-center space-x-2 {{ countRating > 0 ? 'text-yellow-500' : 'text-gray-400' }}">
+                <span class="flex items-center space-x-1">
+                    {% if countRating > 0 %}
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                            <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                        </svg>
+                    {% endif %}
+                    <span>{{ countRating > 0 ? (totalRating / countRating)|round(2) : 'sem avaliações' }}</span>
+                </span>
+            </p>
+
+            <p class="space-x-1 text-sm text-gray-500">
+                <span x-text="distance"></span>
+            </p>
+        </div>
+
+    </a>
+{% endif %}

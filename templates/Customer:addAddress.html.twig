@@ -1,0 +1,79 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Conta', 'url': path('flexy_ftwo_store_customer_profile') }, { 'title' : 'Endereços', 'url': path('flexy_ftwo_store_customer_address_list') }, { 'title': 'Cadastrar endereço' } ] } %}
+
+    <div class="container mt-12 md:mt-0">
+        <div class="lg:flex lg:gap-x-16">
+            {% include 'FlexyFtwoStoreBundle:Customer:header.html.twig' with { active : 'address' } %}
+
+            <section class="w-full mt-12 lg:mt-0">
+                <h2 class="text-xl font-bold leading-tight tracking-tight text-gray-900">
+                    Cadastrar endereço
+                </h2>
+
+                <form class="mt-6" method="post" x-data="addressForm" hx-disabled-elt="find button[type='submit']">
+                    <input type="hidden" name="address[country]" value="Brasil"/>
+
+                    <div class="space-y-6">
+                        <input type="hidden" value="Brasil" name="address[country]">
+
+                        {{- forms.input(form.postcode, "CEP", {
+                            "inputmode": "numeric",
+                            "x-mask": "99999-999",
+                            "x-model.lazy.fill": "postcode",
+                        }) -}}
+
+                        <div class="flex space-x-6">
+                            <div class="flex-1">
+                                {{- forms.input(form.state, "Estado", {
+                                    "x-model.fill": "state"
+                                }) -}}
+                            </div>
+
+                            <div class="flex-1">
+                                {{- forms.input(form.city, "Cidade", {
+                                    "x-model.fill": "city"
+                                }) -}}
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-6">
+                            <div class="flex-1">
+                                {{- forms.input(form.district, "Bairro", {
+                                    "x-model.fill": "district"
+                                }) -}}
+                            </div>
+
+                            <div class="flex-1">
+                                {{- forms.input(form.street, "Rua", {
+                                    "x-model.fill": "street"
+                                }) -}}
+                            </div>
+                        </div>
+
+                        <div class="flex space-x-6">
+                            <div class="flex-1">
+                                {{- forms.input(form.number, "Número", {
+                                    "x-model.fill": "number"
+                                }) -}}
+                            </div>
+
+                            <div class="flex-1">
+                                {{- forms.input(form.complement, "Complemento", {
+                                    "x-model.fill": "complement"
+                                }) -}}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12">
+                        {{- forms.submit("Cadastrar endereço") -}}
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+{% endblock %}

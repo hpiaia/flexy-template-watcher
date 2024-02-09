@@ -1,0 +1,14 @@
+<h2 class="sr-only">Products</h2>
+
+{% if variants|length > 0 %}
+    <div class="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 xl:gap-x-12">
+        {% for variant in variants %}
+            {% include 'FlexyFtwoStoreBundle:Include:variant.html.twig' with {variant : variant} %}
+        {% endfor %}
+    </div>
+    <div class="mt-6 md:mt-12">
+        {{ knp_pagination_render(variants, 'FlexyFtwoStoreBundle:Paginator:pagination.html.twig', [], { 'filters': filters }) }}
+    </div>
+{% else %}
+    <p>Nenhum produto encontrado.</p>
+{% endif %}

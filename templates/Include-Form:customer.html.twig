@@ -1,0 +1,17 @@
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{{- forms.input(form.user.email.first, "E-mail", {
+    "x-model.fill": "form.access.email"
+}) -}}
+
+{{- forms.hidden(form.user.email.second, "", {
+    "x-model.fill": "form.access.email"
+}) -}}
+
+{{- forms.input(form.user.password.first, "Senha", {
+    "x-model.fill": "form.access.password"
+}) -}}
+
+{{- forms.input(form.user.password.second, "Confirme sua senha", {
+    "x-model.fill": "form.access.password_confirmation"
+}) -}}

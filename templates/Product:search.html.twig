@@ -1,0 +1,63 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% set path = [{ url: path('flexy_ftwo_store_product_list_all'), title: 'Produtos' }] %}
+
+{% if category %}
+	{% for step in f2_store_create_breadcrumbs({ category: category }) if step.categoryReferenceCode != 'destaques' %}
+		{% set path = path|merge([{ url: step.categoryUrl, title: step.categoryName }]) %}
+	{% endfor %}
+{% endif %}
+
+{% set banners = flexy_ftwo_banner_image_list((category ? category.referenceCode : 'search') ~ '-banner').images %}
+
+{% set query = app.request.get('q', app.request.get('query', app.request.get('searchTerm'))) %}
+{% set filters = {
+    useSearchParameters: 'true',
+    searchTerm: query,
+    page: app.request.get('page', 1),
+    itemsPerPage: app.request.get('itemsPerPage', 15),
+    sortOrder: app.request.get('sortOrder', 'category-asc'),
+    filter: filterString,
+    shoppingStoreReferenceCode: shoppingStore.referenceCode,
+} %}
+
+{% set result = f2_store_variant_search(query, filters) %}
+
+{% block content %}
+	<div x-data="{ open: false }" @keydown.window.escape="open = false" class="bg-white">
+		<div class="container pt-6 pb-12 md:pt-12">
+			{% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' %}
+		</div>
+
+		{% if banners | length > 0 %}
+			<div class="container pb-12">
+				{% include 'FlexyFtwoStoreBundle:Include/Common:main-banner.html.twig' with { images: banners } %}
+			</div>
+		{% endif %}
+
+		<div class="container pb-8">
+			<h1 class="text-3xl font-bold tracking-tight text-gray-900">
+				{{ category ? category.name : 'Todos os produtos' }}
+			</h1>
+
+			{% if category.description %}
+				<p class="max-w-xl mt-4 text-sm text-gray-700">{{ category.description|raw }}</p>
+			{% endif %}
+
+			{% set subcategories = flexy_ftwo_shopping_store_category_list(storeReferenceCode, category ? category : null).categories %}
+			{% if subcategories|length > 0 %}
+				{% include 'FlexyFtwoStoreBundle:Include:category-list.html.twig' with { title: null, categories: subcategories, small: true } %}
+			{% endif %}
+		</div>
+
+		{% include 'FlexyFtwoStoreBundle:Include:variant-filters.html.twig' %}
+
+		<div class="container py-12 sm:py-16">
+			{% include 'FlexyFtwoStoreBundle:Include:variant-list.html.twig' with {
+                path: path,
+                variants: result.variants,
+                totalResults: result.totalResults
+            } %}
+		</div>
+	</div>
+{% endblock %}

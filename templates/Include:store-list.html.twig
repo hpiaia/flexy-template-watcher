@@ -1,0 +1,56 @@
+{% set stores = flexy_ftwo_shopping_store_random_list(600).shoppingStores %} 
+
+{% macro renderStore(store, slider) %}
+    {% set comments = flexy_ftwo_shopping_store_rating_comment_list(store.id) %}
+
+    {% set totalRating = 0 %}
+    {% set countRating = 0 %}
+    {% for comment in comments %}
+        {% set totalRating = totalRating + comment.rating.rating %}
+        {% set countRating = countRating + 1 %}
+    {% endfor %}
+
+    <a href="{{ path('flexy_ftwo_store_shoppingStore_index', { shoppingStoreReferenceCode: store.referenceCode }) }}" class="flex items-center w-auto space-x-4 rounded-xl mr-8 transform hover:scale-105 transition duration-300 hover:shadow-lg p-4 {{ slider ? 'swiper-slide' : 'w-full' }}" x-data="storeListItem('{{ store.referenceCode }}', { lat: {{ store.distributionCenter.latitude }}, lng: {{ store.distributionCenter.longitude }} })">
+        <img src="{{ store.logo ? store.logo.path : flexy_ftwo_account_resource_url_img('img/product-placeholder.gif') }}" alt="" class="object-contain w-32 h-32 shadow lg:w-40 lg:h-40">
+
+        <div class="space-y-2 {{ slider ? 'w-56' : '' }}">
+            <p class="font-medium">
+                {{ store.name }}
+            </p>
+
+            <p class="text-sm flex items-center space-x-2 {{ countRating > 0 ? 'text-yellow-500' : 'text-gray-400' }}">
+                <span class="flex items-center space-x-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4">
+                        <path fill-rule="evenodd" d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.007 5.404.433c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.433 2.082-5.006z" clip-rule="evenodd" />
+                    </svg>
+                    <span>{{ countRating > 0 ? (totalRating / countRating)|round(2) : 'sem avaliações' }}</span>
+                </span>
+            </p>
+
+            <p class="space-x-1 text-sm text-gray-500">
+                <span x-text="distance"></span>
+            </p>
+        </div>
+    </a>
+{% endmacro %}
+
+{% if stores | length > 0 %}
+    {% if slider %}
+        <div class="py-4 overflow-visible swiper" x-data="slider({ type: 'carousel', slidesPerView: 'auto' })">
+            <div class="swiper-wrapper">
+                {% for store in stores %}
+                    {{ _self.renderStore(store, slider) }}
+                {% endfor %}
+            </div>
+
+            <div class="swiper-button-prev" x-ref="prev"></div>
+            <div class="swiper-button-next" x-ref="next"></div>
+        </div>
+    {% else %}
+        <div class="grid grid-cols-1 py-6 lg:grid-cols-2 xl:grid-cols-3 gap-y-8">
+            {% for store in stores %}
+                {{ _self.renderStore(store, slider) }}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endif %}

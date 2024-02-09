@@ -1,0 +1,91 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include/Common:main-banner.html.twig' with { images: flexy_ftwo_banner_image_list('home-banner').images } %}
+    
+    <div class="container py-12 mx-auto lg:py-16">
+        <h1 class="text-xl font-bold text-center text-primary-dark md:text-3xl lg:text-4xl">
+            Para quem você busca um presente?
+        </h1>
+        
+        <div class="grid grid-cols-1 gap-4 mt-12 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
+            <div class="mt-8 text-center group md:mt-0">
+                <a href="{{ path("flexy_ftwo_store_product_list", { categoryReferenceCode: "elas" }) }}">
+                    <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/categorias/elas.png" class="w-56 h-56 mx-auto rounded-full shadow-md aspect-square group-hover:opacity-75" alt="Ícone de categoria" />
+                    <p class="mt-3 text-2xl font-semibold text-gray-900">Para elas</p>
+                </a>
+            </div>
+            <div class="mt-8 text-center group md:mt-0">
+                <a href="{{ path("flexy_ftwo_store_product_list", { categoryReferenceCode: "eles" }) }}">
+                    <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/categorias/eles.png" class="w-56 h-56 mx-auto rounded-full shadow-md aspect-square group-hover:opacity-75" alt="Ícone de categoria" />
+                    <p class="mt-3 text-2xl font-semibold text-gray-900">Para eles</p>
+                </a>
+            </div>
+            <div class="mt-8 text-center group md:mt-0">
+                <a href="{{ path("flexy_ftwo_store_product_list", { categoryReferenceCode: "teens-e-kids" }) }}">
+                    <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/categorias/teens-e-kids.png" class="w-56 h-56 mx-auto rounded-full shadow-md aspect-square group-hover:opacity-75" alt="Ícone de categoria" />
+                    <p class="mt-3 text-2xl font-semibold text-gray-900">Para teens &amp; kids</p>
+                </a>
+            </div>
+            <div class="mt-8 text-center group md:mt-0">
+                <a href="{{ path("flexy_ftwo_store_product_list", { categoryReferenceCode: "pets" }) }}">
+                    <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/categorias/pets.png" class="w-56 h-56 mx-auto rounded-full shadow-md aspect-square group-hover:opacity-75" alt="Ícone de categoria" />
+                    <p class="mt-3 text-2xl font-semibold text-gray-900">Para pets</p>
+                </a>
+            </div>
+        </div>
+        
+        <div class="mt-24 bg-white">
+            <div class="px-6 mx-auto max-w-7xl lg:px-8">
+                <div class="max-w-2xl mx-auto lg:text-center">
+                    <h2 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                        Sua solução para dar presentes incríveis
+                    </h2>
+                    <p class="mt-6 text-lg leading-8 text-gray-600">
+                        Entenda em um relance por que somos sua melhor escolha para surpreender e tornar cada ocasião
+                        memorável.
+                    </p>
+                </div>
+                
+                <div class="max-w-2xl mx-auto mt-16 sm:mt-20 lg:mt-24 lg:max-w-none">
+                    <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+                        <div class="flex flex-col">
+                            <dt class="text-base font-semibold leading-7 text-gray-900">
+                                <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/inicial-1.png" alt="Ícone de funcionalidade" class="w-12 h-12 mb-6" />
+                                <span>Diversidade de presentes</span>
+                            </dt>
+                            <dd class="flex flex-col flex-auto mt-4 text-base leading-7 text-gray-600">
+                                <p class="flex-auto">
+                                    Aqui, opções não faltam. Presentes para todos os gostos, ocasiões e pessoas
+                                    especiais.
+                                </p>
+                            </dd>
+                        </div>
+                        <div class="flex flex-col">
+                            <dt class="text-base font-semibold leading-7 text-gray-900">
+                                <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/inicial-2.png" alt="Ícone de funcionalidade" class="w-12 h-12 mb-6" />
+                                <span>Entrega no mesmo dia</span>
+                            </dt>
+                            <dd class="flex flex-col flex-auto mt-4 text-base leading-7 text-gray-600">
+                                <p class="flex-auto">
+                                    Rápido e pontual. Solicite até as 17h e receba seu pedido no mesmo dia.
+                                </p>
+                            </dd>
+                        </div>
+                        <div class="flex flex-col">
+                            <dt class="text-base font-semibold leading-7 text-gray-900">
+                                <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/inicial-3.png" alt="Ícone de funcionalidade" class="w-12 h-12 mb-6" />
+                                <span>Conveniência e praticidade</span>
+                            </dt>
+                            <dd class="flex flex-col flex-auto mt-4 text-base leading-7 text-gray-600">
+                                <p class="flex-auto">
+                                    Surpreender quem você ama nunca foi tão fácil. Seleção, compra e entrega, tudo simples e prático.
+                                </p>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -13,7 +13,7 @@ export class Template {
   ) {}
 
   get remotePath() {
-    return `${BASE_URL}/${this.value}`
+    return `${BASE_URL}/template/edit/system/FlexyFtwoStoreBundle:${this.value}`
   }
 
   get remoteContent() {

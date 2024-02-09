@@ -1,0 +1,46 @@
+{% if total > 0 %}
+    <section aria-labelledby="shipping-summary-heading" class="mb-6">
+        <h2 id="shipping-summary-heading" class="text-lg font-medium text-gray-900">
+            Calcular frete
+        </h2>
+
+        <div class="py-4" x-data="calculateShipping">
+            <form class="flex space-x-4" method="get" action="/cart" hx-swap="outerHTML" hx-select="#cart-totals" hx-target="#cart-totals" hx-disabled-elt="find button[type='submit']">
+                <input inputmode="numeric" name="zipCode" x-model.fill="zipCode" placeholder="CEP" x-mask="99999-999" class="form-control" value="{{ app.request.get('zipCode') }}" autofocus />
+
+                <button type="submit" class="btn btn-primary" disabled="{{ app.request.get('zipCode') ? 'false' : 'true' }}" :disabled="!isValid">
+                    {{ forms.spinner() }}
+                    <span>Calcular</span>
+                </button>
+            </form>
+
+            {% if app.request.get('zipCode') %}
+                <div class="mt-6">
+                    {% for cart in details.carts if cart.items|length > 0 %}
+                        {% set ship = details.shipmentGroups[cart.shoppingStore ? cart.shoppingStore.id : 0].shippingMethodDto|first %}
+
+                        <dl class="mt-2 space-y-2">
+                            <div class="flex items-center justify-between {{ loop.first ? '' : 'border-t border-gray-200 pt-2' }}">
+                                <dt class="text-sm text-gray-600">{{ cart.shoppingstore.name }}</dt>
+                                <dd class="flex space-x-2 text-sm font-medium">
+                                    {% if ship.isCarrier %} 
+                                        <span class="text-gray-500">
+                                            {{ ship.deliverytimefrom > 5 ? ship.deliverytimefrom ~ 'm' : ship.deliverytimefrom ~ 'h' }} -
+                                            {{ ship.deliverytimeto > 5 ? ship.deliverytimeto ~ 'm' : ship.deliverytimeto ~ 'h' }}
+                                        </span>
+                                        <span>&bullet;</span>
+                                        <span class="text-gray-900">R$ {{ ship.price|number_format(2, ',', '.') }}</span>
+                                    {% elseif ship.name == 'shipping.method.pickuponplace' %}
+                                        <span class="text-gray-900">Somente retirada</span>
+                                    {% else %}
+                                        <span class="text-gray-900">Não disponível</span>
+                                    {% endif %}
+                                </dd>
+                            </div>
+                        </dl>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}

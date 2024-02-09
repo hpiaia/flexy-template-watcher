@@ -1,0 +1,88 @@
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      container: {
+        center: true,
+        padding: '2rem',
+      },
+      extend: {
+        colors: {
+          primary: {
+            "50": "#f5f5fd",
+            "100": "#edecfb",
+            "200": "#dddcf8",
+            "300": "#c4c1f1",
+            "400": "#a59de8",
+            "500": "#8878de",
+            "600": "#7257d0",
+            "700": "#6144bd",
+            "800": "#51399e",
+            "900": "#443082",
+            "950": "#2a1e57",
+          },
+        },
+      },
+    }
+  }
+</script>
+<style type="text/tailwindcss">
+  :root {
+            --swiper-theme-color: #8878de;
+            --swiper-navigation-size: 16px;
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .htmx-indicator {
+            display: none;
+        }
+
+        .htmx-request .htmx-indicator {
+            display: inline;
+        }
+
+        .htmx-request.htmx-indicator {
+            display: inline;
+        }
+
+        @layer utilities {
+            .form-label {
+                @apply block text-sm font-semibold leading-6 text-gray-900;
+            }
+
+            .form-control {
+                @apply block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-primary-600 sm:text-sm sm:leading-6;
+            }
+
+            .btn {
+                @apply flex items-center justify-center rounded-md px-3.5 py-2.5 text-center text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+            }
+
+            .btn-lg {
+                @apply flex items-center justify-center rounded-md px-4 py-3 text-center font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
+            }
+
+            .btn-primary {
+                @apply text-white bg-primary-600 enabled:hover:bg-primary-700 focus-visible:ring-primary-600 focus-visible:ring-offset-2;
+            }
+
+            .btn-secondary {
+                @apply text-gray-900 bg-gray-100 enabled:hover:bg-gray-200 focus-visible:ring-gray-200 focus-visible:ring-offset-2;
+            }
+
+            .swiper-slide-thumb-active {
+                @apply opacity-75;
+            }
+
+            .swiper-button-prev {
+                @apply bg-gray-700/50 w-12 h-12 rounded-full text-white -mt-6;
+            }
+
+            .swiper-button-next {
+                @apply bg-gray-700/50 w-12 h-12 rounded-full text-white -mt-6;
+            }
+        }
+    </style>

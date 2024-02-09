@@ -1,0 +1,167 @@
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{% set user = flexy_ftwo_current_user() %}
+{% set cart = f2_store_current_cart() %}
+
+{% set query = app.request.get('q', app.request.get('query', app.request.get('searchTerm'))) %}
+
+<div class="bg-white" x-data="header({{ query ? 'true' : 'false' }})">
+	<header class="relative">
+		<div class="bg-primary-700">
+			<div class="container flex items-center justify-between h-10 px-4 sm:px-6 lg:px-8">
+				<div class="lg:flex-1" x-data="location">
+					<div class="flex items-center space-x-2 text-white" x-show="$store.location.value">
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"/>
+							<path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"/>
+						</svg>
+						<span class="text-sm" x-text="$store.location.value.text"></span>
+					</div>
+				</div>
+
+				<div class="flex items-center justify-end flex-1 space-x-6 md:space-x-12">
+					{% if user %}
+						<span class="text-sm font-medium text-white">
+							Olá,
+							{{ user.agent ? user.agent.name : app.user.customer.Fullname }}
+						</span>
+
+						<a href="{{ path('flexy_ftwo_store_customer_logout') }}" class="text-sm font-medium text-white hover:text-gray-100" preload>
+							Sair
+						</a>
+					{% else %}
+						<a href="{{ path('flexy_ftwo_store_customer_create') }}" class="text-sm font-medium text-white hover:text-gray-100" preload>
+							Criar minha conta
+						</a>
+
+						<a href="{{ path('flexy_ftwo_store_customer_login') }}" class="text-sm font-medium text-white hover:text-gray-100" preload>
+							Entrar
+						</a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-primary-500">
+			<div class="container">
+				<div class="flex items-center justify-between h-28">
+					<div class="flex-1 hidden lg:flex lg:items-center">
+						<a href="{{ path('flexy_ftwo_store_index') }}">
+							<span class="sr-only">Mimo Express</span>
+							<img class="w-auto h-16" src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/logo.png" alt="">
+						</a>
+					</div>
+
+					<div class="hidden h-full lg:flex">
+						<div class="ml-8">
+							<div class="flex justify-center h-full space-x-8">
+								<a href="{{ path('flexy_ftwo_store_index') }}" class="flex items-center font-medium text-white" preload>
+									Início
+								</a>
+								<a href="{{ path('flexy_ftwo_store_static', {page : 'lojas'}) }}" class="flex items-center font-medium text-white" preload preload-images="true">
+									Lojas
+								</a>
+								<a href="{{ path('flexy_ftwo_store_static', {page : 'ideias-para-presentear'}) }}" class="flex items-center font-medium text-white" preload preload-images="true">
+									Ideias para presentear
+								</a>
+								<a href="{{ path('flexy_ftwo_store_shoppingStore_create') }}" class="flex items-center font-medium text-white" preload>
+									Cadastrar minha loja
+								</a>
+							</div>
+						</div>
+					</div>
+
+					<div class="flex items-center flex-1 lg:hidden">
+						<button type="button" class="p-2 -ml-2 text-white rounded-md" @click="toggleMenu">
+							<span class="sr-only">Menu principal</span>
+							<svg class="w-6 h-6" fill="none" viewbox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+							</svg>
+						</button>
+
+						<button class="p-2 ml-2 text-white" @click.prevent="toggleSearch">
+							<span class="sr-only">Buscar</span>
+							<svg class="w-6 h-6" fill="none" viewbox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+							</svg>
+						</button>
+					</div>
+
+					<div class="flex items-center justify-end flex-1">
+						<div class="flex items-center lg:ml-8">
+							<div class="flex space-x-8">
+								<div class="hidden lg:flex">
+									<button class="p-2 -m-2 text-white" @click.prevent="toggleSearch">
+										<span class="sr-only">Buscar</span>
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                                        </svg>
+									</button>
+								</div>
+
+								<div class="flex">
+									<a href="{{ user ? path('flexy_ftwo_store_customer_profile') : path('flexy_ftwo_store_customer_login') }}" class="p-2 -m-2 text-white" preload>
+										<span class="sr-only">Conta</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                                        </svg>
+									</a>
+								</div>
+							</div>
+
+							<span class="w-px h-6 mx-6 bg-gray-200 lg:mx-6" aria-hidden="true"></span>
+
+							<div class="flow-root">
+								<a href="/cart" class="flex items-center p-2 -m-2 text-white group" id="cart-button" preload>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 1 0-7.5 0v4.5m11.356-1.993 1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 0 1-1.12-1.243l1.264-12A1.125 1.125 0 0 1 5.513 7.5h12.974c.576 0 1.059.435 1.119 1.007ZM8.625 10.5a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm7.5 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                    </svg>
+                                    
+									<span class="ml-2 text-sm font-medium text-white group-hover:text-white">
+										{{ flexy_ftwo_current_cart_totals().countTotalItems }}
+									</span>
+									<span class="sr-only">itens no carrinho</span>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+
+                <div class="h-full pb-8" x-show="menuOpen" x-collapse x-cloak>
+                    <div>
+                        <div class="h-full space-y-8">
+                            <a href="{{ path('flexy_ftwo_store_index') }}" class="flex items-center font-medium text-white" preload>
+                                Início
+                            </a>
+                            <a href="{{ path('flexy_ftwo_store_static', {page : 'lojas'}) }}" class="flex items-center font-medium text-white" preload preload-images="true">
+                                Lojas
+                            </a>
+                            <a href="{{ path('flexy_ftwo_store_static', {page : 'ideias-para-presentear'}) }}" class="flex items-center font-medium text-white" preload preload-images="true">
+                                Ideias para presentear
+                            </a>
+                            <a href="{{ path('flexy_ftwo_store_shoppingStore_create') }}" class="flex items-center font-medium text-white" preload>
+                                Cadastrar minha loja
+                            </a>
+                        </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</header>
+
+	<div class="bg-gray-100 border-y" x-show="searchOpen" x-cloak x-collapse>
+		<form method="get" action="/produto/busca" class="container flex py-4 space-x-4" hx-disabled-elt="find button[type='submit']">
+			<input name="q" class="flex-1 text-sm form-control" placeholder="Pelo que você deseja procurar?" value="{{ query }}" x-ref="searchInput">
+
+			<button type="submit" class="btn btn-primary group">
+                {{ forms.spinner() }}
+
+                <svg class="block w-6 h-6 md:hidden" fill="none" viewbox="0 0 24 24" stroke-width="2.5" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
+                </svg>
+
+                <span class="hidden md:block">Pesquisar</span>
+            </button>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,235 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% set canceled = flexy_ftwo_last_order_canceled_status(order) %}
+
+{% set steps = [
+    {presentation : 'Realizado', status : flexy_ftwo_last_order_opened_status(order)},
+    {presentation : 'Aprovado', status : flexy_ftwo_last_order_paid_status(order)},
+    {presentation : 'Enviado', status : flexy_ftwo_last_order_shipped_status(order)},
+    {presentation : 'Entregue', status : flexy_ftwo_last_order_delivered_status(order)},
+] %}
+
+{% set lastStep = 0 %}
+{% for step in steps %}
+    {% if step.status %}
+        {% set lastStep = loop.index - 1 %}
+    {% endif %}
+{% endfor %}
+
+{% set shippingMethod = order.firstShippingMethod %}
+{% set paymentMethod = order.firstPaymentMethod %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Conta' }, { 'title' : 'Meus pedidos', 'url' : path('flexy_ftwo_store_customer_profile') }, {'title' : "Pedido #" ~ order.number } ] } %}
+
+    <div class="container mt-12 md:mt-0">
+        <div class="lg:flex lg:gap-x-16">
+            {% include 'FlexyFtwoStoreBundle:Customer:header.html.twig' with { active : 'profile' } %}
+
+            <section class="w-full mt-12 lg:mt-0">
+                <h1 class="text-3xl font-bold tracking-tight text-gray-900">Pedido #{{ order.number }}</h1>
+
+                <div class="pb-5 mt-2 text-sm border-b border-gray-200 sm:flex sm:justify-between">
+                    <div class="flex space-x-2">
+                        <span>{{ createdAt|date('d/m/Y') }}</span>
+                        <span class="text-gray-300">&bullet;</span>
+                        <span>
+                            {% if canceled %}
+                                <span>Cancelado</span>
+                            {% else %}
+                                <span>{{ order.status.presentation }}</span>
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <div class="mt-4 sm:mt-0">
+                        {% if order.invoice is defined and order.invoice is not empty %}
+                            <a href="{{ order.invoice.url }}" class="font-medium text-primary-600 hover:text-primary-500">
+                                Nota fiscal
+                                <span aria-hidden="true"> &rarr;</span>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                {% if not canceled %}
+                    {% set stepsWidth = 0 %}
+                    {% if lastStep == 0 %}
+                        {% set stepsWidth = 1 %}
+                    {% elseif lastStep == 1 %}
+                        {% set stepsWidth = 37.5 %}
+                    {% elseif lastStep == 2 %}
+                        {% set stepsWidth = 62.5 %}
+                    {% elseif lastStep == 3 %}
+                        {% set stepsWidth = 100 %}
+                    {% endif %}
+
+                    <div class="mt-12">
+                        <h4 class="sr-only">Status</h4>
+                        <p class="text-sm font-medium text-gray-900">
+                            {{ steps[lastStep].presentation }} em <time>{{ steps[lastStep].status.createdAt|date('d/m/Y') }}</time>
+                        </p>
+                        <div class="mt-6" aria-hidden="true">
+                            <div class="overflow-hidden bg-gray-200 rounded-full">
+                                <div class="h-2 rounded-full bg-primary-600" style="width: {{ stepsWidth }}%"></div>
+                            </div>
+
+                            <div class="hidden grid-cols-4 mt-6 text-sm font-medium text-gray-600 sm:grid">
+                                {% for step in steps %}
+                                    <div class="{{ loop.first ? 'text-left' : loop.last ? 'text-right' : 'text-center' }} {{ step.status ? 'text-primary-600' : '' }}">{{ step.presentation }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="mt-6">
+                    {% for item in order.getItems %}
+                        <div class="flex py-6 space-x-6 border-b border-gray-200">
+                            <img src="{{ f2_store_image_placeholder_medium(item.variant.product.masterImage) }}" alt="" class="flex-none object-cover object-center w-20 h-20 bg-gray-100 rounded-lg sm:h-40 sm:w-40">
+                            <div class="flex flex-col flex-auto">
+                                <div>
+                                    <h4 class="font-medium text-gray-900">
+                                        {% set url = path('flexy_ftwo_store_shoppingStore_product_details', {
+                                            'shoppingStoreReferenceCode': order.shoppingStore.referenceCode,
+                                            'masterVariantReferenceCode': item.variant.referenceCode,
+                                            'slug': item.variant.product.slug,
+                                        }) %}
+                                        {% if item.variant.deletedAt is null %}
+                                            <a href="{{ url }}">{{ item.variant.product.name }}</a>
+                                        {% else %}
+                                            <span>{{ item.variant.product.name }}</span>
+                                        {% endif %}
+                                    </h4>
+                                    
+                                    {% if item.variant.product.shoppingStore.name %}
+                                        <p class="flex mt-4 space-x-2 text-sm text-gray-700">
+                                            <svg class="flex-shrink-0 w-5 h-5 text-green-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                                            </svg>
+                                            <span>Vendido e entregue por</span>
+                                            <a class="font-medium" href="{{ path('flexy_ftwo_store_shoppingStore_index', { shoppingStoreReferenceCode: item.variant.product.shoppingStore.referenceCode }) }}">
+                                                {{ item.variant.product.shoppingStore.name }}
+                                            </a>
+                                        </p>
+                                    {% endif %}
+                                </div>
+                                <div class="flex items-end flex-1 mt-6">
+                                    <dl class="flex space-x-4 text-sm divide-x divide-gray-200 sm:space-x-6">
+                                        <div class="flex">
+                                            <dt class="font-medium text-gray-900">Quantidade</dt>
+                                            <dd class="ml-2 text-gray-700">1</dd>
+                                        </div>
+                                        <div class="flex pl-4 sm:pl-6">
+                                            <dt class="font-medium text-gray-900">Preço</dt>
+                                            <dd class="ml-2 text-gray-700">R$ {{ item.getUnitPrice|number_format(2, ',', '.') }}</dd>
+                                        </div>
+                                    </dl>
+                                </div>
+
+                                {% if item.attributeValues|length > 0 %}
+                                    <div class="pt-6 pb-4 space-y-4 text-sm">
+                                        {% for cartItemAttributeValue in item.attributeValues %}
+                                            {% set cartItemAttributeOption = cartItemAttributeValue.option %}
+                                            {% set value = cartItemAttributeValue.value %}
+                        
+                                            {% if value %}
+                                                <div>
+                                                    <h2 class="text-sm font-medium text-gray-900">{{ cartItemAttributeOption.attribute.name }}</h2>
+                                                    <div class="mt-1 prose-sm prose text-gray-500">{{ value }}</div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div aria-labelledby="summary-heading" class="mt-12">
+                    <h2 id="summary-heading" class="sr-only">Resumo do pedido</h2>
+
+                    <div class="px-6 py-6 rounded-lg bg-gray-50 lg:grid lg:grid-cols-12 lg:gap-x-8 lg:px-0 lg:py-8">
+                        <dl class="grid grid-cols-1 gap-6 text-sm sm:grid-cols-2 md:gap-x-8 lg:col-span-5 lg:pl-8">
+                            <div>
+                                <dt class="font-medium text-gray-900">Forma de entrega</dt>
+                                <dd class="mt-3 text-gray-500">
+                                    <span class="block text-base text-gray-600">
+                                        {{ shippingMethod.isPickupOnPlace ? 'Retirar na loja' : 'Entrega no endereço' }}
+                                    </span>
+
+                                    {% if shippingMethod.isPickupOnPlace %}
+                                        <span class="block mt-1">{{ order.shoppingStore.distributionCenter.street|trim }}, {{ order.shoppingStore.distributionCenter.number }}</span>
+                                        <span class="block mt-1">{{ order.shoppingStore.distributionCenter.district }}</span>
+                                        <span class="block mt-1">{{ order.shoppingStore.distributionCenter.city }}, {{ order.shoppingStore.distributionCenter.state }}</span>
+                                    {% else %}
+                                        <span class="block mt-1">{{ shippingMethod.address|split(',')|slice(0, 2)|join(',') }}</span>
+                                        <span class="block mt-1">{{ shippingMethod.address|split(',')|slice(2, 1)|join(',') }}</span>
+                                        <span class="block mt-1">{{ shippingMethod.address|split(',')|slice(3, 2)|join(',') }}</span>
+                                    {% endif %}
+                                </dd>
+                            </div>
+
+                            <div>
+                                <dt class="font-medium text-gray-900">Forma de pagamento</dt>
+                                <dd class="mt-3">
+                                    {% if paymentMethod.isPix %}
+                                        <div>
+                                            <img class="h-16 rounded-lg" src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/pix.png" />
+                                            <p class="sr-only">Pix</p>
+                                        </div>
+
+                                        {% if not canceled and not steps[1].status %}
+                                            <div class="mt-2" x-data="pixQrCode({{ order.number }})">
+                                                <img class="rounded" :src="image" x-show="image" x-cloak>
+
+                                                <div class="mt-2" x-show="code" x-cloak>
+                                                    <input type="hidden" :value="code" id="qrcode">
+
+                                                    <button type="button" class="btn btn-secondary" data-clipboard-target="#qrcode" x-ref="copy">
+                                                        Copiar chave
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% else %}
+                                        <div>
+                                            <img class="h-16 rounded-lg" src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/{{ paymentMethod.name|replace({'payment.method.creditcard.' : ''}) }}.png" />
+                                            <p class="sr-only">{{ paymentMethod.presentation }}</p>
+                                        </div>
+                                        <div class="mt-4">
+                                            <p class="text-gray-900">
+                                                {{ paymentMethod.creditCard.installments == 1 ? 'À vista' : 'Parcelado' }}
+                                            </p>
+                                            <p class="text-gray-600">{{ paymentMethod.creditCard.installments }}x de R$ {{ paymentMethod.creditCard.installmentsValue|number_format(2, ',', '.') }}</p>
+                                        </div>
+                                    {% endif %}
+                                </dd>
+                            </div>
+                        </dl>
+
+                        <dl class="mt-8 text-sm divide-y divide-gray-200 lg:col-span-7 lg:mt-0 lg:pr-8">
+                            <div class="flex items-center justify-between pb-4">
+                                <dt class="text-gray-600">Subtotal</dt>
+                                <dd class="font-medium text-gray-900">R$ {{ (order.getTotal + order.getBillingDiscountTotal - order.firstShippingMethod.originalPrice)|number_format(2, ',', '.') }}</dd>
+                            </div>
+                            <div class="flex items-center justify-between py-4">
+                                <dt class="text-gray-600">Descontos</dt>
+                                <dd class="font-medium text-gray-900">R$ {{ order.getBillingDiscountTotal|number_format(2, ',', '.') }}</dd>
+                            </div>
+                            <div class="flex items-center justify-between py-4">
+                                <dt class="text-gray-600">Frete</dt>
+                                <dd class="font-medium text-gray-900">R$ {{ shippingMethod.originalPrice|number_format(2, ',', '.') }}</dd>
+                            </div>
+                            <div class="flex items-center justify-between pt-4">
+                                <dt class="font-medium text-gray-900">Total do pedido</dt>
+                                <dd class="font-medium text-primary-600">R$ {{ order.getTotal|number_format(2, ',', '.')  }}</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock %}

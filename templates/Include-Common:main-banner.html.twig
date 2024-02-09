@@ -1,0 +1,14 @@
+{% if images|length > 0 %}
+    <div class="swiper" x-data="slider">
+        <div class="swiper-wrapper">
+            {% for banner in images %}
+                <div class="swiper-slide">
+                    <a href="{{ banner.target ?: '#' }}">
+                        <img src="{{ banner.path }}" alt="" class="w-full h-auto">
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="swiper-pagination" x-ref="pagination"></div>
+    </div>
+{% endif %}

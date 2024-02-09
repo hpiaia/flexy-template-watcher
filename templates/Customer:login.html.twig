@@ -1,0 +1,71 @@
+{% extends 'FlexyFtwoStoreBundle:Layout:base.html.twig' %}
+
+{% import "FlexyFtwoStoreBundle:Components:forms.html.twig" as forms %}
+
+{% set form = flexy_ftwo_form('login').login %}
+
+{% block content %}
+    {% include 'FlexyFtwoStoreBundle:Include:breadcrumbs.html.twig' with { path : [ { 'title' : 'Entrar' } ] } %}
+
+    <div class="container py-6 md:py-12">
+        <div class="grid h-full gap-24 mt-6 lg:grid-cols-2 md:mt-12">
+            <div>
+                <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">Seja bem vindo(a)</h1>
+
+                <p class="mt-2 text-sm leading-6 text-gray-500">
+                    Ainda não tem uma conta?
+
+                    <a class="font-semibold text-primary-600 hover:text-primary-500" href="{{ path('flexy_ftwo_store_customer_create') }}">
+                        Cadastre-se
+                    </a>
+                </p>
+
+                <form class="mt-10 space-y-6" method="post" action="{{ path('login_check') }}" hx-disabled-elt="find button[type='submit']">
+                    {{ forms.errors('store-login-error') }}
+
+                    {{ forms.recaptcha() }}
+
+                    {{ forms.input(form._username, "E-mail", { "required": true, "autofocus": true }) }}
+                    {{ forms.input(form._password, "Senha", { "required": true }) }}
+
+                    {{ forms.submit("Entrar") }}
+                </form>
+
+                <a href="/customer/remember-password" class="block mt-6 text-sm font-semibold leading-6 text-primary-600 hover:text-primary-500">
+                    Esqueci minha senha
+                </a>
+            
+                <div class="relative mt-10">
+                    <div class="absolute inset-0 flex items-center" aria-hidden="true">
+                        <div class="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div class="relative flex justify-center text-sm font-medium leading-6">
+                        <span class="px-6 text-gray-900 bg-white">Ou continue com</span>
+                    </div>
+                </div>
+
+                <div class="mt-6 space-y-6">
+                    {% if googleLoginUrl %}
+                        <a href="{{ googleLoginUrl }}" class="flex w-full items-center justify-center gap-3 rounded-md border px-3.5 py-2.5 text-gray-900 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+                            <svg viewBox="0 0 488 512" class="h-5 w-5 fill-current text-[#DB4437]">
+                                <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
+                            </svg>
+                            <span class="text-sm font-semibold leading-6">Google</span>
+                        </a>
+                    {% endif %}
+
+                    {% if facebookLoginUrl %}
+                        <a href="{{ facebookLoginUrl }}" class="flex w-full items-center justify-center gap-3 rounded-md border px-3.5 py-2.5 text-gray-900 hover:bg-gray-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2">
+                            <svg viewBox="0 0 512 512" class="h-5 w-5 fill-current text-[#4267B2]">
+                                <path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"></path>
+                            </svg>
+                            <span class="text-sm font-semibold leading-6">Facebook</span>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <img src="https://d8vlg9z1oftyc.cloudfront.net/mimo/mimo-file-manager/assets/images/cadastro.png" alt="" class="ml-auto hidden h-[400px] lg:block xl:h-[600px]" />
+        </div>
+    </div>
+{% endblock %}

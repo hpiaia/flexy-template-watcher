@@ -1,0 +1,31 @@
+<section class="lg:col-span-7">
+    <ul role="list" class="border-t border-b border-gray-200 divide-y divide-gray-200">
+        {% for cart in details.carts %}
+            {% for item in cart.items %}
+                {% include 'FlexyFtwoStoreBundle:Include/Cart:cart-list-item.html.twig' with {
+                    item: item,
+                    distributionCenterReferenceCode: cart.shoppingStore ? cart.shoppingStore.referenceCode : null
+                } %}
+            {% endfor %}
+        {% endfor %}
+    </ul>
+
+    {% set nonEmptyCarts = details.carts|filter(cart => cart.items|length > 0) %}
+    {% if nonEmptyCarts|length is same as(0) %}
+        <div class="flex flex-col items-center justify-center py-24">
+            <h2 class="text-2xl font-bold text-gray-900">
+                Nenhum produto na sacola.
+            </h2>
+
+            <div class="mt-2 text-sm text-center text-gray-500">
+                <p>
+                    Adicionamos produtos aqui quando você clica em <strong>Comprar</strong> ou <strong>Adicionar a sacola</strong>.
+                </p>
+
+                <a class="inline-block mt-4 font-semibold text-primary-600 hover:text-primary-500" href="/produto/listar">
+                    &larr; Voltar para a loja
+                </a>
+            </div>
+        </div>
+    {% endif %}
+</section>
